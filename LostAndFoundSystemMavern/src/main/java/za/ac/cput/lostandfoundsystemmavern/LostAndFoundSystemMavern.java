@@ -1,13 +1,15 @@
 // WE EXPECT A USER TO LOG_IN ORT SOGN_UP
 // THEREFORE WE USE THE LogInWindow AS OUR ENTRY POINT FOR THE APP
 package za.ac.cput.lostandfoundsystemmavern;
-/**
- *
- * @author 230939023
- */
+import javax.swing.JFrame;
+import windows.LogInWindow;
+//@author 230939023
 public class LostAndFoundSystemMavern {
-
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        LogInWindow LogInGui = new LogInWindow();
+        LogInGui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        LogInGui.setSize(900, 600);
+        LogInGui.setLocationRelativeTo(null);
+        LogInGui.setVisible(true);
     }
 }

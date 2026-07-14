@@ -1,6 +1,6 @@
 // WE EXPECT A USER TO LOG_IN ORT SOGN_UP
 // THEREFORE WE USE THE LogInWindow AS OUR ENTRY POINT FOR THE APP
-// PROJECT SETUP COMPLETE
+// LOST AND FOUND PROJECT SETUP COMPLETE
 package za.ac.cput.lostandfoundsystemmavern;
 import javax.swing.JFrame;
 import windows.LogInWindow;

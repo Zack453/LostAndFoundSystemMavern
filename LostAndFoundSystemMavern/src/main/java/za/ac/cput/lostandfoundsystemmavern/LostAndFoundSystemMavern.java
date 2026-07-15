@@ -4,7 +4,7 @@
 package za.ac.cput.lostandfoundsystemmavern;
 import javax.swing.JFrame;
 import windows.LogInWindow;
-//@author 230939023
+// @author 230939023
 public class LostAndFoundSystemMavern {
     public static void main(String[] args) {
         LogInWindow LogInGui = new LogInWindow();

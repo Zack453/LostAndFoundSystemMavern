@@ -1,10 +1,10 @@
-// WE EXPECT A USER TO LOG_IN ORT SOGN_UP
+// 230939023
+// WE EXPECT A USER TO LOG_IN ORT SIGN_UP
 // THEREFORE WE USE THE LogInWindow AS OUR ENTRY POINT FOR THE APP
 // LOST AND FOUND PROJECT SETUP COMPLETE
 package za.ac.cput.lostandfoundsystemmavern;
 import javax.swing.JFrame;
 import windows.LogInWindow;
-// @author 230939023
 public class LostAndFoundSystemMavern {
     public static void main(String[] args) {
         LogInWindow LogInGui = new LogInWindow();

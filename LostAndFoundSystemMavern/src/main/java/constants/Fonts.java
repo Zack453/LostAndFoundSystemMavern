@@ -1,11 +1,7 @@
+// 230939023
 package constants;
-
 import java.awt.Font;
 import java.io.InputStream;
-
-/*
- * @230939023
- */
 public class Fonts {
 
     public static Font Bold;

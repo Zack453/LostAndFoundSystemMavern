@@ -1,11 +1,6 @@
+// @230939023
 package constants;
-
 import java.awt.Color;
-
-/*
- * @230939023
- */
-
 public class Colors {
 
     public static final Color MAIN_BACKGROUND_COLOR = new Color(66, 107, 143);

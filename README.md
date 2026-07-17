@@ -1,6 +1,8 @@
-# Lost And Found System
+# Campus Findr (Lost and Found System)
 
-The **Lost and Found System** is a desktop application that helps students report and find lost items on campus. It allows users to post, search, and manage items in a simple and organized way.
+**Campus Findr** is a desktop application designed specifically for universities to simplify the process of reporting, tracking, and recovering lost items on campus. Instead of relying on word of mouth, social media posts, or visiting multiple campus departments, **Campus Findr** provides a centralized platform where students and staff can report lost or found items, search existing listings, and manage item information in one place.
+
+**Campus Findr** improves the efficiency of campus lost-and-found services by keeping all reports organized in a secure database. It helps reduce the time it takes to reunite owners with their belongings, minimizes duplicate reports, and makes it easier for students, staff, and administrators to access up-to-date information about lost and found items. By providing a dedicated system for managing campus property, **Campus Findr** creates a faster, more reliable, and more organized lost-and-found process for universities.
 
 ## ⚠️ Important
 

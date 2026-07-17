@@ -15,3 +15,6 @@ https://www.oracle.com/java/technologies/javase/jdk23-archive-downloads.html
 https://youtu.be/Eh9-txew5r8
 
 > **Note:** The tutorial installs **Java 25**, but for this project you **must install Java JDK 23.0.2** instead.
+
+### Installation Tutorial
+You need to add java 23 as a default, check tools on the top navbar in netbeans => click options => java (should be next to html) => click mavern => then change the default to java 23

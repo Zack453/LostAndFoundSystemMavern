@@ -125,16 +125,16 @@ public class LogInWindow extends JFrame implements ActionListener, ItemListener 
 
         // SIGN UP
         if (e.getSource() == btnSignUp) {
-            new SignUpWindow().setVisible(true);
-            dispose();
-            return;
+            SignUpWindow signUp = new SignUpWindow();
+            signUp.setVisible(true);
+            this.dispose();
         }
 
         // FORGOT PASSWORD
         if (e.getSource() == btnForgotPassword) {
-            new ForgotPasswordWindow().setVisible(true);
+            ForgotPasswordWindow fpwindow = new ForgotPasswordWindow();
+            fpwindow.setVisible(true);
             dispose();
-            return;
         }
 
         // LOG IN
@@ -153,8 +153,9 @@ public class LogInWindow extends JFrame implements ActionListener, ItemListener 
             // DATABASE LOGIN WILL GO HERE
             // Temporary login until database is connected
             JOptionPane.showMessageDialog(this, "Login Successful!");
-            new Dashboard().setVisible(true);
-            dispose();
+            Dashboard dashbaord = new Dashboard();
+            dashbaord.setVisible(true);
+            this.dispose();
         }
     }
 

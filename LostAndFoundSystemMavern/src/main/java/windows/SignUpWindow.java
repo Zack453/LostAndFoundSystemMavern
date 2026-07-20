@@ -1,5 +1,5 @@
-// 230939023
 package windows;
+
 // CUSTOM IMPORTS
 import constants.Fonts;
 import constants.Colors;
@@ -8,13 +8,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
-public class SignUpWindow extends JFrame implements ActionListener, ItemListener {
+public class SignUpWindow extends JFrame implements ActionListener {
 
     private JLabel title, lblName, lblSurname, lblIdNum, lblEmail, lblPassword, lblRoleSelection, lblSecQuestion, lblAnswer;
-    private JTextField txtName, txtSurname, txtIdNum, txtEmail, txtPassword, txtAnswer;
+    private JTextField txtName, txtSurname, txtIdNum, txtEmail, txtAnswer;
+    private JPasswordField txtPassword;
     private JComboBox<String> cboSecQuestion;
     private JRadioButton radStudent, radLecturer, radStaff, radAdmin;
     private ButtonGroup roleGroup;
@@ -56,7 +55,7 @@ public class SignUpWindow extends JFrame implements ActionListener, ItemListener
         roleGroup.add(radStaff);
         roleGroup.add(radAdmin);
 
-        // SECUIRTY QUESTION
+        // SECURITY QUESTION        
         lblSecQuestion = new JLabel("Security Question:");
         cboSecQuestion = new JComboBox<>(new String[]{
             "What is your pet's name?",
@@ -110,7 +109,7 @@ public class SignUpWindow extends JFrame implements ActionListener, ItemListener
         CenterPanel.add(lblAnswer);
         CenterPanel.add(txtAnswer);
         CenterPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
-        JPanel wrapper = new JPanel(new GridBagLayout());  
+        JPanel wrapper = new JPanel(new GridBagLayout());
         wrapper.add(CenterPanel);
         wrapper.setBackground(Colors.MAIN_BACKGROUND_COLOR);
 
@@ -118,12 +117,12 @@ public class SignUpWindow extends JFrame implements ActionListener, ItemListener
         SouthPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
         SouthPanel.add(btnCancel);
         SouthPanel.add(btnConfirm);
-        SouthPanel.setBackground(Colors.MAIN_BACKGROUND_COLOR);    
-        
+        SouthPanel.setBackground(Colors.MAIN_BACKGROUND_COLOR);
+
         // BUTTONS
         btnCancel.addActionListener(this);
         btnConfirm.addActionListener(this);
-        
+
         btnCancel.setBackground(Colors.WHITE_TEXT_COLOR);
         btnCancel.setForeground(Colors.BLACK_BUTTON_COLOR);
         btnConfirm.setBackground(Colors.BLUE_BUTTON_COLOR);
@@ -143,19 +142,69 @@ public class SignUpWindow extends JFrame implements ActionListener, ItemListener
     @Override
     public void actionPerformed(ActionEvent e) {
 
+        // CANCEL BUTTON
         if (e.getSource() == btnCancel) {
-            LogInWindow login = new LogInWindow();
-            login.setVisible(true);
-            this.dispose();
+            new LogInWindow().setVisible(true);
+            dispose();
+            return;
         }
 
+        // CONFIRM BUTTON
         if (e.getSource() == btnConfirm) {
-            JOptionPane.showMessageDialog(this, "Sign Up button clicked.");
+
+            String name = txtName.getText().trim();
+            String surname = txtSurname.getText().trim();
+            String email = txtEmail.getText().trim();
+            String idNum = txtIdNum.getText().trim();
+            String password = new String(txtPassword.getPassword());
+            String answer = txtAnswer.getText().trim();
+            String securityQuestion = cboSecQuestion.getSelectedItem().toString();
+            String role = "";
+
+            if (radStudent.isSelected()) {
+                role = "Student";
+            } else if (radLecturer.isSelected()) {
+                role = "Lecturer";
+            } else if (radStaff.isSelected()) {
+                role = "Staff";
+            } else if (radAdmin.isSelected()) {
+                role = "Admin";
+            }
+
+            // Validation
+            if (name.isEmpty() || surname.isEmpty() || email.isEmpty() || idNum.isEmpty() || password.isEmpty() || answer.isEmpty() || role.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Missing Information", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Display information (replacing with database logic later)
+            System.out.println("========== NEW USER ==========");
+            System.out.println("Name: " + name);
+            System.out.println("Surname: " + surname);
+            System.out.println("Email: " + email);
+            System.out.println("Student/Staff Number: " + idNum);
+            System.out.println("Password: " + password);
+            System.out.println("Role: " + role);
+            System.out.println("Security Question: " + securityQuestion);
+            System.out.println("Answer: " + answer);
+            System.out.println("==============================");
+
+            JOptionPane.showMessageDialog(this, "Account created successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            // TODO:
+            // Create User object
+            // Save to database/file
+            // Navigate to login window if desired
+            
+            // CLEAR ALL FIELDS            
+            txtName.setText("");
+            txtSurname.setText("");
+            txtEmail.setText("");
+            txtIdNum.setText("");
+            txtPassword.setText("");
+            roleGroup.clearSelection();
+            cboSecQuestion.setSelectedItem("select");
+            txtAnswer.setText("");
         }
-    }
-
-    @Override
-    public void itemStateChanged(ItemEvent e) {
-
     }
 }

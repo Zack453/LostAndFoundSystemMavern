@@ -15,7 +15,8 @@ import java.awt.event.ItemListener;
 public class LogInWindow extends JFrame implements ActionListener, ItemListener {
 
     private JLabel title, lblUsername, lblPassword, lblUserType, lblForgotPassword;
-    private JTextField txtUsername, txtPassword;
+    private JTextField txtUsername;
+    private JPasswordField txtPassword;
     private JComboBox cboUserType;
     private JButton btnForgotPassword, btnLogIn, btnSignUp;
     private JPanel NorthPanel, DetailsPanel, CenterPanel, SouthPanel;
@@ -118,43 +119,48 @@ public class LogInWindow extends JFrame implements ActionListener, ItemListener 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        String username = txtUsername.getText();
-        String password = txtPassword.getText();
-        String userType = cboUserType.getSelectedItem().toString();
-
+        // SIGN UP
         if (e.getSource() == btnSignUp) {
-            SignUpWindow signUp = new SignUpWindow();
-            signUp.setVisible(true);
-            this.dispose();
+            new SignUpWindow().setVisible(true);
+            dispose();
+            return;
         }
 
+        // FORGOT PASSWORD
+        if (e.getSource() == btnForgotPassword) {
+            new ForgotPasswordWindow().setVisible(true);
+            dispose();
+            return;
+        }
+
+        // LOG IN
         if (e.getSource() == btnLogIn) {
-            if (username.isEmpty() || password.isEmpty() || userType.isEmpty()){
-                JOptionPane.showMessageDialog(null, "Please Enter All Fields");
+
+            String username = txtUsername.getText().trim();
+            String password = new String(((JPasswordField) txtPassword).getPassword());
+            String userType = cboUserType.getSelectedItem().toString();
+
+            // Validation
+            if (username.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter your username and password.", "Missing Information", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-        }
-        
-        if (e.getSource() == btnForgotPassword) {
-            ForgotPasswordWindow fpwindow = new ForgotPasswordWindow();
-            fpwindow.setVisible(true);
-            this.dispose();
-            
-        }
 
+            // DATABASE LOGIN WILL GO HERE
+            // Temporary login until database is connected
+            JOptionPane.showMessageDialog(this, "Login Successful!");
+            new Dashboard().setVisible(true);
+            dispose();
+        }
     }
-    
+
     @Override
     public void itemStateChanged(ItemEvent e) {
-    if (e.getStateChange() == ItemEvent.SELECTED) {
-            String user = cboUserType.getSelectedItem().toString();
-//            if (!query.equals("select")) {
-//                JOptionPane.showMessageDialog(null, query);
-//            }
-        }
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
 }

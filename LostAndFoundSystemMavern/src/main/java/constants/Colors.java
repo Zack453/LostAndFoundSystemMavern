@@ -7,6 +7,7 @@ public class Colors {
     public static final Color LOGIN_BACKGROUND_COLOR = new Color (255,255,255);
     public static final Color DASHBOARD_BACKGROUND_COLOR = new Color(157,157,157);
     public static final Color LIGHT_BLUE_BACKGROUND_COLOR = new Color(180,202,221);
+    public static final Color LIGHT_GREY_BACKGROUND_COLOR = new Color(227,224,224);
 
     public static final Color SIDEBAR_COLOR = new Color(255,255,255);
     public static final Color HEADER_COLOR = new Color(255,255,255);

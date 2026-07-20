@@ -1,6 +1,6 @@
-//230939023
+// 230939023
 package windows;
-
+// CUSTOM IMPORTS
 import constants.Fonts;
 import constants.Colors;
 
@@ -13,70 +13,37 @@ import java.awt.event.ItemListener;
 
 public class SignUpWindow extends JFrame implements ActionListener, ItemListener {
 
-    private JLabel title;
-
-    private JLabel lblName;
-    private JTextField txtName;
-
-    private JLabel lblSurname;
-    private JTextField txtSurname;
-
-    private JLabel lblIdNum;
-    private JTextField txtIdNum;
-
-    private JLabel lblEmail;
-    private JTextField txtEmail;
-
-    private JLabel lblPassword;
-    private JTextField txtPassword;
-
-    private JLabel lblSecQuestion;
-    private JComboBox cboSecQuestion;
-
-    private JLabel lblRoleSelection;
+    private JLabel title, lblName, lblSurname, lblIdNum, lblEmail, lblPassword, lblRoleSelection, lblSecQuestion, lblAnswer;
+    private JTextField txtName, txtSurname, txtIdNum, txtEmail, txtPassword, txtAnswer;
+    private JComboBox<String> cboSecQuestion;
     private JRadioButton radStudent, radLecturer, radStaff, radAdmin;
     private ButtonGroup roleGroup;
-
-    private JButton btnCancel, btnSignUp;
-
+    private JButton btnCancel, btnConfirm;
     private JPanel NorthPanel, CenterPanel, SouthPanel;
 
     public SignUpWindow() {
-        super("Sign Up Window");
 
-        CenterPanel = new JPanel();
+        super("Sign Up");
+
         NorthPanel = new JPanel();
+        CenterPanel = new JPanel();
         SouthPanel = new JPanel();
 
-        // NORTH PANEL        
         title = new JLabel("SIGN UP");
         title.setFont(Fonts.Bold.deriveFont(36f));
-
-        // SOUTH PANEL        
+        title.setForeground(Color.WHITE);
         lblName = new JLabel("Name:");
         txtName = new JTextField(15);
-
         lblSurname = new JLabel("Surname:");
         txtSurname = new JTextField(15);
-
-        lblIdNum = new JLabel("Student/Staff Number:");
-        txtIdNum = new JTextField(15);
-
         lblEmail = new JLabel("Email:");
         txtEmail = new JTextField(15);
-
+        lblIdNum = new JLabel("Student/Staff Number:");
+        txtIdNum = new JTextField(15);
         lblPassword = new JLabel("Password:");
-        txtPassword = new JPasswordField(15);
+        txtPassword = new JPasswordField(15); //HIDES VALUES
 
-        lblSecQuestion = new JLabel("Security Question:");
-        cboSecQuestion = new JComboBox(new String[]{
-            "What is your pet's name?",
-            "What is your mother's maiden name?",
-            "What was your first school?"
-        });
-        cboSecQuestion.setBackground(Colors.LOGIN_BACKGROUND_COLOR);
-
-        lblRoleSelection = new JLabel("Role selection:");
+        lblRoleSelection = new JLabel("Role Selection:");
 
         radStudent = new JRadioButton("Student");
         radLecturer = new JRadioButton("Lecturer");
@@ -89,18 +56,33 @@ public class SignUpWindow extends JFrame implements ActionListener, ItemListener
         roleGroup.add(radStaff);
         roleGroup.add(radAdmin);
 
-        btnCancel = new JButton("Cancel");
-        btnSignUp = new JButton("Sign Up");
+        // SECUIRTY QUESTION
+        lblSecQuestion = new JLabel("Security Question:");
+        cboSecQuestion = new JComboBox<>(new String[]{
+            "What is your pet's name?",
+            "What is your mother's maiden name?",
+            "What was your first school?"
+        });
+        cboSecQuestion.setBackground(Colors.LOGIN_BACKGROUND_COLOR);
 
-        guiSetUp();
+        lblAnswer = new JLabel("Answer:");
+        txtAnswer = new JTextField(15);
+
+        btnCancel = new JButton("Cancel");
+        btnConfirm = new JButton("Confirm");
+
+        GuiSetUp();
     }
 
-    public void guiSetUp() {
+    public void GuiSetUp() {
 
-        NorthPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        // NORTH PANEL
+        NorthPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
         NorthPanel.add(title);
+        NorthPanel.setBackground(Colors.MAIN_BACKGROUND_COLOR);
 
-        CenterPanel.setLayout(new GridLayout(6, 2));
+        // CENTER PANEL
+        CenterPanel.setLayout(new GridLayout(8, 2, 15, 15));
         CenterPanel.add(lblName);
         CenterPanel.add(txtName);
         CenterPanel.add(lblSurname);
@@ -109,14 +91,49 @@ public class SignUpWindow extends JFrame implements ActionListener, ItemListener
         CenterPanel.add(txtEmail);
         CenterPanel.add(lblIdNum);
         CenterPanel.add(txtIdNum);
+        CenterPanel.add(lblPassword);
+        CenterPanel.add(txtPassword);
+        // ROLE SELECTION
+        CenterPanel.add(lblRoleSelection);
+        CenterPanel.setBackground(Colors.LIGHT_GREY_BACKGROUND_COLOR);
 
-        SouthPanel.setLayout(new GridLayout(1,1));
-        
-        
-        
-//        this.add(mainPanel);
+        JPanel rolePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+//        rolePanel.setBackground(Colors,.);
+        rolePanel.add(radStudent);
+        rolePanel.add(radLecturer);
+        rolePanel.add(radStaff);
+        rolePanel.add(radAdmin);
 
-//        setSize(900, 600);
+        CenterPanel.add(rolePanel);
+        CenterPanel.add(lblSecQuestion);
+        CenterPanel.add(cboSecQuestion);
+        CenterPanel.add(lblAnswer);
+        CenterPanel.add(txtAnswer);
+        CenterPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+        JPanel wrapper = new JPanel(new GridBagLayout());  
+        wrapper.add(CenterPanel);
+        wrapper.setBackground(Colors.MAIN_BACKGROUND_COLOR);
+
+        // SOUTH PANEL
+        SouthPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        SouthPanel.add(btnCancel);
+        SouthPanel.add(btnConfirm);
+        SouthPanel.setBackground(Colors.MAIN_BACKGROUND_COLOR);    
+        
+        // BUTTONS
+        btnCancel.addActionListener(this);
+        btnConfirm.addActionListener(this);
+        
+        btnCancel.setBackground(Colors.WHITE_TEXT_COLOR);
+        btnCancel.setForeground(Colors.BLACK_BUTTON_COLOR);
+        btnConfirm.setBackground(Colors.BLUE_BUTTON_COLOR);
+        btnConfirm.setForeground(Colors.WHITE_TEXT_COLOR);
+
+        this.setLayout(new BorderLayout());
+        this.add(NorthPanel, BorderLayout.NORTH);
+        this.add(wrapper, BorderLayout.CENTER);
+        this.add(SouthPanel, BorderLayout.SOUTH);
+
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -125,9 +142,20 @@ public class SignUpWindow extends JFrame implements ActionListener, ItemListener
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        if (e.getSource() == btnCancel) {
+            LogInWindow login = new LogInWindow();
+            login.setVisible(true);
+            this.dispose();
+        }
+
+        if (e.getSource() == btnConfirm) {
+            JOptionPane.showMessageDialog(this, "Sign Up button clicked.");
+        }
     }
 
     @Override
     public void itemStateChanged(ItemEvent e) {
+
     }
 }

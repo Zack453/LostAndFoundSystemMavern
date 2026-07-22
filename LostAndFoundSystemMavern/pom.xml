@@ -10,4 +10,12 @@
         <maven.compiler.release>23</maven.compiler.release>
         <exec.mainClass>za.ac.cput.lostandfoundsystemmavern.LostAndFoundSystemMavern</exec.mainClass>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derbyclient</artifactId>
+            <version>10.14.2.0</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 </project>

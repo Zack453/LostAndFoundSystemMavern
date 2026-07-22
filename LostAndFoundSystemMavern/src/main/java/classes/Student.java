@@ -1,8 +1,5 @@
+//230939023
 package classes;
-
-/*
- * @230939023
- */
 
 public class Student extends Person {
     

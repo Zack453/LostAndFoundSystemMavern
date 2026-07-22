@@ -2,7 +2,6 @@ package windows;
 
 import constants.Fonts;
 import constants.Icons;
-//import 
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,16 +18,30 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
     private JPanel topPanel;
     private JPanel contentPanel;
 
-    // CHECK ROLE()
-    // RENDER DIFFERENT COMPONENTS BASED ON ROLE
-    
+    // Page Title
+    private JLabel lblTitle;
+
+    // Dummy Claim Data
+    private final Object[][] claimData = {
+        {"iPhone 11", "23-Jan-2026", "Pending", Color.ORANGE},
+        {"Student Card", "28-Jan-2026", "Approved", new Color(30, 180, 60)},
+        {"Laptop", "02-Feb-2026", "Rejected", Color.RED}
+    };
+
+    // Dummy Post Data
+    private final String[][] postData = {
+        {"Phone", "22-May-26", "Library", "Pending"},
+        {"Wallet", "13-Jun-26", "Court Yard", "Pending"},
+        {"Backpack", "18-Jun-26", "Student Centre", "Claimed"},
+        {"Calculator", "20-Jun-26", "Engineering Block", "Pending"}
+    };
+
     public Dashboard() {
         guiSetUp();
     }
 
     private void guiSetUp() {
 
-        setTitle("Dashboard");
         setSize(1400, 800);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
@@ -43,6 +56,7 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
 
         JPanel center = new JPanel(new BorderLayout(15, 15));
         center.setOpaque(false);
+
         center.add(topPanel, BorderLayout.NORTH);
         center.add(contentPanel, BorderLayout.CENTER);
 
@@ -56,7 +70,6 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
 
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(240, 0));
-//        SPACING NEEDED
         panel.setBackground(Color.WHITE);
         panel.setLayout(new BorderLayout());
 
@@ -68,7 +81,7 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         menu.setOpaque(false);
         menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
 
-        String items[] = {
+        String[] items = {
             "Report Lost Item",
             "Report Found Item",
             "View All Posts",
@@ -76,15 +89,49 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
             "Help"
         };
 
-        for (String btnNames : items) {
-            JButton btn = new JButton(btnNames);
-            btn.setFocusPainted(false);
-            btn.setBorderPainted(false);
-            btn.setBackground(Color.WHITE);
-            btn.setHorizontalAlignment(SwingConstants.LEFT);
-            btn.setMaximumSize(new Dimension(220, 40));
-            menu.add(btn);
-        }
+//        for (String btnName : items) {
+        
+            JButton btnReportLostItem = new JButton("Report Lost Item");
+            btnReportLostItem.setFocusPainted(false);
+            btnReportLostItem.setBorderPainted(false);
+            btnReportLostItem.setBackground(Color.WHITE);
+            btnReportLostItem.setHorizontalAlignment(SwingConstants.LEFT);
+            btnReportLostItem.setMaximumSize(new Dimension(220, 40));
+            
+            JButton btnReportFoundItem = new JButton("Report Found Item");
+            btnReportFoundItem.setFocusPainted(false);
+            btnReportFoundItem.setBorderPainted(false);
+            btnReportFoundItem.setBackground(Color.WHITE);
+            btnReportFoundItem.setHorizontalAlignment(SwingConstants.LEFT);
+            btnReportFoundItem.setMaximumSize(new Dimension(220, 40));
+            
+            JButton btnViewAllPosts = new JButton("View All Posts");
+            btnViewAllPosts.setFocusPainted(false);
+            btnViewAllPosts.setBorderPainted(false);
+            btnViewAllPosts.setBackground(Color.WHITE);
+            btnViewAllPosts.setHorizontalAlignment(SwingConstants.LEFT);
+            btnViewAllPosts.setMaximumSize(new Dimension(220, 40));
+            
+            JButton btnClaims = new JButton("Claims");
+            btnClaims.setFocusPainted(false);
+            btnClaims.setBorderPainted(false);
+            btnClaims.setBackground(Color.WHITE);
+            btnClaims.setHorizontalAlignment(SwingConstants.LEFT);
+            btnClaims.setMaximumSize(new Dimension(220, 40));
+            
+            JButton btnHelp = new JButton("Help");
+            btnHelp.setFocusPainted(false);
+            btnHelp.setBorderPainted(false);
+            btnHelp.setBackground(Color.WHITE);
+            btnHelp.setHorizontalAlignment(SwingConstants.LEFT);
+            btnHelp.setMaximumSize(new Dimension(220, 40));
+            
+            menu.add(btnReportLostItem);
+            menu.add(btnReportFoundItem);
+            menu.add(btnViewAllPosts);
+            menu.add(btnClaims);
+            menu.add(btnHelp);
+            
 
         JButton logout = new JButton("Logout");
         logout.setFocusPainted(false);
@@ -94,7 +141,6 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         panel.add(logout, BorderLayout.SOUTH);
 
         return panel;
-
     }
 
     private JPanel createTopPanel() {
@@ -106,9 +152,10 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         titlePanel.setBackground(Color.WHITE);
 
-        JLabel title = new JLabel("DASHBOARD");
-        title.setFont(new Font("SansSerif", Font.BOLD, 30));
-        titlePanel.add(title);
+        lblTitle = new JLabel("Dashboard");
+        lblTitle.setFont(Fonts.Bold.deriveFont(30f));
+
+        titlePanel.add(lblTitle);
 
         JPanel nav = new JPanel(new BorderLayout());
         nav.setBackground(Color.WHITE);
@@ -120,6 +167,7 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
 
         JPanel right = new JPanel();
         right.setOpaque(false);
+
         right.add(btnSearch);
         right.add(btnBell);
 
@@ -133,24 +181,24 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         btnHome.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Dashboard dashbaord = new Dashboard();
-                dashbaord.setVisible(true);
+                Dashboard dashboard = new Dashboard();
+                dashboard.setVisible(true);
                 dispose();
             }
         });
-        
+
         btnBell.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                NotificationsWindow notificaionsWindow = new NotificationsWindow();
-                notificaionsWindow.setVisible(true);
+                NotificationsWindow notificationsWindow = new NotificationsWindow();
+                notificationsWindow.setVisible(true);
                 dispose();
             }
         });
 
         return top;
     }
-
+    
     private JPanel createContentPanel() {
 
         JPanel panel = new JPanel();
@@ -158,6 +206,9 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+        // =========================
+        // Claims Section
+        // =========================
         JLabel claims = new JLabel("View All Claims");
         claims.setOpaque(true);
         claims.setBackground(new Color(40, 90, 255));
@@ -170,22 +221,24 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         JPanel claimCards = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 0));
         claimCards.setOpaque(false);
 
-        claimCards.add(createClaimCard(
-                "iPhone 11",
-                "23-Jan-2026",
-                "Pending",
-                Color.ORANGE));
-
-        claimCards.add(createClaimCard(
-                "Student Card",
-                "28-Jan-2026",
-                "Approved",
-                new Color(30, 180, 60)));
+        for (Object[] claim : claimData) {
+            claimCards.add(
+                    createClaimCard(
+                            (String) claim[0],
+                            (String) claim[1],
+                            (String) claim[2],
+                            (Color) claim[3]
+                    )
+            );
+        }
 
         panel.add(claimCards);
 
         panel.add(Box.createVerticalStrut(30));
 
+        // =========================
+        // Posts Section
+        // =========================
         JLabel posts = new JLabel("View All Posts");
         posts.setOpaque(true);
         posts.setBackground(new Color(40, 90, 255));
@@ -195,20 +248,19 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         panel.add(posts);
         panel.add(Box.createVerticalStrut(15));
 
-        JPanel cards = new JPanel(new GridLayout(1, 2, 20, 20));
+        JPanel cards = new JPanel(new GridLayout(0, 2, 20, 20));
         cards.setOpaque(false);
 
-        cards.add(createPostCard(
-                "Phone",
-                "22-May-26",
-                "Library",
-                "Pending"));
-
-        cards.add(createPostCard(
-                "Wallet",
-                "13-June-26",
-                "Court Yard",
-                "Pending"));
+        for (String[] post : postData) {
+            cards.add(
+                    createPostCard(
+                            post[0],
+                            post[1],
+                            post[2],
+                            post[3]
+                    )
+            );
+        }
 
         panel.add(cards);
 
@@ -224,6 +276,7 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         card.setLayout(new GridLayout(2, 2));
 
         card.add(new JLabel(item));
+
         JLabel st = new JLabel(status, SwingConstants.RIGHT);
         st.setForeground(color);
         card.add(st);
@@ -249,7 +302,14 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         info.add(new JLabel("Location : " + location));
 
         JLabel st = new JLabel("Status : " + status);
-        st.setForeground(Color.ORANGE);
+
+        if (status.equalsIgnoreCase("Approved")) {
+            st.setForeground(new Color(30, 180, 60));
+        } else if (status.equalsIgnoreCase("Rejected")) {
+            st.setForeground(Color.RED);
+        } else {
+            st.setForeground(Color.ORANGE);
+        }
 
         info.add(st);
 
@@ -265,16 +325,15 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         return card;
     }
 
-    
-    // USING ANONYMOUS CLASSES    
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+//        if 
+
     }
 
     @Override
     public void itemStateChanged(ItemEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // Not used.
     }
-
 }

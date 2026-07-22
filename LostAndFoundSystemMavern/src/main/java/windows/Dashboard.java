@@ -17,18 +17,14 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
     private JPanel sidebarPanel;
     private JPanel topPanel;
     private JPanel contentPanel;
-
-    // Page Title
     private JLabel lblTitle;
 
-    // Dummy Claim Data
     private final Object[][] claimData = {
         {"iPhone 11", "23-Jan-2026", "Pending", Color.ORANGE},
         {"Student Card", "28-Jan-2026", "Approved", new Color(30, 180, 60)},
         {"Laptop", "02-Feb-2026", "Rejected", Color.RED}
     };
 
-    // Dummy Post Data
     private final String[][] postData = {
         {"Phone", "22-May-26", "Library", "Pending"},
         {"Wallet", "13-Jun-26", "Court Yard", "Pending"},
@@ -56,13 +52,11 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
 
         JPanel center = new JPanel(new BorderLayout(15, 15));
         center.setOpaque(false);
-
         center.add(topPanel, BorderLayout.NORTH);
         center.add(contentPanel, BorderLayout.CENTER);
 
         add(sidebarPanel, BorderLayout.WEST);
         add(center, BorderLayout.CENTER);
-
         setVisible(true);
     }
 
@@ -90,48 +84,93 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         };
 
 //        for (String btnName : items) {
+        JButton btnReportLostItem = new JButton("Report Lost Item");
+        btnReportLostItem.setFocusPainted(false);
+        btnReportLostItem.setBorderPainted(false);
+        btnReportLostItem.setBackground(Color.WHITE);
+        btnReportLostItem.setHorizontalAlignment(SwingConstants.LEFT);
+        btnReportLostItem.setMaximumSize(new Dimension(220, 40));
+
+        JButton btnReportFoundItem = new JButton("Report Found Item");
+        btnReportFoundItem.setFocusPainted(false);
+        btnReportFoundItem.setBorderPainted(false);
+        btnReportFoundItem.setBackground(Color.WHITE);
+        btnReportFoundItem.setHorizontalAlignment(SwingConstants.LEFT);
+        btnReportFoundItem.setMaximumSize(new Dimension(220, 40));
+
+        JButton btnViewAllPosts = new JButton("View All Posts");
+        btnViewAllPosts.setFocusPainted(false);
+        btnViewAllPosts.setBorderPainted(false);
+        btnViewAllPosts.setBackground(Color.WHITE);
+        btnViewAllPosts.setHorizontalAlignment(SwingConstants.LEFT);
+        btnViewAllPosts.setMaximumSize(new Dimension(220, 40));
+
+        JButton btnClaims = new JButton("Claims");
+        btnClaims.setFocusPainted(false);
+        btnClaims.setBorderPainted(false);
+        btnClaims.setBackground(Color.WHITE);
+        btnClaims.setHorizontalAlignment(SwingConstants.LEFT);
+        btnClaims.setMaximumSize(new Dimension(220, 40));
+
+        JButton btnHelp = new JButton("Help");
+        btnHelp.setFocusPainted(false);
+        btnHelp.setBorderPainted(false);
+        btnHelp.setBackground(Color.WHITE);
+        btnHelp.setHorizontalAlignment(SwingConstants.LEFT);
+        btnHelp.setMaximumSize(new Dimension(220, 40));
+
+        menu.add(btnReportLostItem);
+        menu.add(btnReportFoundItem);
+        menu.add(btnViewAllPosts);
+        menu.add(btnClaims);
+        menu.add(btnHelp);
+
+        btnReportLostItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ReportLostItemWindow reportlostitemwindow = new ReportLostItemWindow();
+                reportlostitemwindow.setVisible(true);
+                dispose();
+            }
+        });
         
-            JButton btnReportLostItem = new JButton("Report Lost Item");
-            btnReportLostItem.setFocusPainted(false);
-            btnReportLostItem.setBorderPainted(false);
-            btnReportLostItem.setBackground(Color.WHITE);
-            btnReportLostItem.setHorizontalAlignment(SwingConstants.LEFT);
-            btnReportLostItem.setMaximumSize(new Dimension(220, 40));
-            
-            JButton btnReportFoundItem = new JButton("Report Found Item");
-            btnReportFoundItem.setFocusPainted(false);
-            btnReportFoundItem.setBorderPainted(false);
-            btnReportFoundItem.setBackground(Color.WHITE);
-            btnReportFoundItem.setHorizontalAlignment(SwingConstants.LEFT);
-            btnReportFoundItem.setMaximumSize(new Dimension(220, 40));
-            
-            JButton btnViewAllPosts = new JButton("View All Posts");
-            btnViewAllPosts.setFocusPainted(false);
-            btnViewAllPosts.setBorderPainted(false);
-            btnViewAllPosts.setBackground(Color.WHITE);
-            btnViewAllPosts.setHorizontalAlignment(SwingConstants.LEFT);
-            btnViewAllPosts.setMaximumSize(new Dimension(220, 40));
-            
-            JButton btnClaims = new JButton("Claims");
-            btnClaims.setFocusPainted(false);
-            btnClaims.setBorderPainted(false);
-            btnClaims.setBackground(Color.WHITE);
-            btnClaims.setHorizontalAlignment(SwingConstants.LEFT);
-            btnClaims.setMaximumSize(new Dimension(220, 40));
-            
-            JButton btnHelp = new JButton("Help");
-            btnHelp.setFocusPainted(false);
-            btnHelp.setBorderPainted(false);
-            btnHelp.setBackground(Color.WHITE);
-            btnHelp.setHorizontalAlignment(SwingConstants.LEFT);
-            btnHelp.setMaximumSize(new Dimension(220, 40));
-            
-            menu.add(btnReportLostItem);
-            menu.add(btnReportFoundItem);
-            menu.add(btnViewAllPosts);
-            menu.add(btnClaims);
-            menu.add(btnHelp);
-            
+        btnReportFoundItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ReportFoundItemWindow reportfounditemwindow = new ReportFoundItemWindow();
+                reportfounditemwindow.setVisible(true);
+                dispose();
+            }
+        });
+        
+        btnViewAllPosts.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ViewAllPostsWindow viewallpostswindow = new ViewAllPostsWindow();
+                viewallpostswindow.setVisible(true);
+                dispose();
+            }
+        });
+        
+        btnClaims.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ClaimWindow claimwindow = new ClaimWindow();
+                claimwindow.setVisible(true);
+                dispose();
+            }
+        });
+        
+        btnHelp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                HelpWindow helpwindow = new HelpWindow();
+                helpwindow.setVisible(true);
+                dispose();
+            }
+        });
+        
+        
 
         JButton logout = new JButton("Logout");
         logout.setFocusPainted(false);
@@ -139,7 +178,6 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         panel.add(profile, BorderLayout.NORTH);
         panel.add(menu, BorderLayout.CENTER);
         panel.add(logout, BorderLayout.SOUTH);
-
         return panel;
     }
 
@@ -198,7 +236,7 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
 
         return top;
     }
-    
+
     private JPanel createContentPanel() {
 
         JPanel panel = new JPanel();
@@ -206,9 +244,6 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        // =========================
-        // Claims Section
-        // =========================
         JLabel claims = new JLabel("View All Claims");
         claims.setOpaque(true);
         claims.setBackground(new Color(40, 90, 255));
@@ -233,18 +268,13 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         }
 
         panel.add(claimCards);
-
         panel.add(Box.createVerticalStrut(30));
 
-        // =========================
-        // Posts Section
-        // =========================
         JLabel posts = new JLabel("View All Posts");
         posts.setOpaque(true);
         posts.setBackground(new Color(40, 90, 255));
         posts.setForeground(Color.WHITE);
         posts.setBorder(new EmptyBorder(8, 15, 8, 15));
-
         panel.add(posts);
         panel.add(Box.createVerticalStrut(15));
 
@@ -263,7 +293,6 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         }
 
         panel.add(cards);
-
         return panel;
     }
 
@@ -274,7 +303,6 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         card.setBackground(Color.WHITE);
         card.setBorder(new LineBorder(Color.LIGHT_GRAY));
         card.setLayout(new GridLayout(2, 2));
-
         card.add(new JLabel(item));
 
         JLabel st = new JLabel(status, SwingConstants.RIGHT);
@@ -327,13 +355,9 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
-//        if 
-
     }
 
     @Override
     public void itemStateChanged(ItemEvent e) {
-        // Not used.
     }
 }

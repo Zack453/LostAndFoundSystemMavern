@@ -3,25 +3,32 @@ package lostandfoundsystem.domain;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-//
-
 public class Claim {
-    
+
     private int claimId;
     private int personId;
     private int itemId;
     private String status;
-    
-    //Formatted Date
+    private String proof;
+
     LocalDate dateObj = LocalDate.now();
-    DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    
-    private String date = dateObj.format(formatDate); 
-    
+
+    DateTimeFormatter formatDate =
+            DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    private String date =
+            dateObj.format(formatDate);
+
     public Claim() {
     }
-    
-    public Claim(int claimId, int personId, int itemId, String date, String status) {
+
+    public Claim(
+            int claimId,
+            int personId,
+            int itemId,
+            String date,
+            String status) {
+
         this.claimId = claimId;
         this.personId = personId;
         this.itemId = itemId;
@@ -45,12 +52,16 @@ public class Claim {
         return status;
     }
 
-    public DateTimeFormatter getFormatDate() {
-        return formatDate;
-    }
-
     public String getDate() {
         return date;
+    }
+
+    public String getProof() {
+        return proof;
+    }
+
+    public DateTimeFormatter getFormatDate() {
+        return formatDate;
     }
 
     public void setClaimId(int claimId) {
@@ -72,5 +83,8 @@ public class Claim {
     public void setDate(String date) {
         this.date = date;
     }
-    
+
+    public void setProof(String proof) {
+        this.proof = proof;
+    }
 }

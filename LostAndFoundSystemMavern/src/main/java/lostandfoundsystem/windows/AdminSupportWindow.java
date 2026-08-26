@@ -3,8 +3,12 @@
 package lostandfoundsystem.windows;
 
 import lostandfoundsystem.domain.User;
+import lostandfoundsystem.connection.DBConnection;
 
 import java.awt.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -219,8 +223,21 @@ public class AdminSupportWindow extends JFrame {
             );
 
             if (result == JOptionPane.YES_OPTION) {
+                
+                String sql = "INSERT INTO ADMIN_SUPPORT "
+                        + "(name, student_number, issue_description) "
+                        + "VALUES (?, ?, ?)";
+                
+                try (Connection connection = DBConnection.derbyConnection();
+                        PreparedStatement statement = connection.prepareStatement(sql)) {
 
-                JOptionPane.showMessageDialog(
+                        statement.setString(1, name);
+                        statement.setString(2, studentNumber);
+                        statement.setString(3, issue);
+
+                        statement.executeUpdate();
+
+                    JOptionPane.showMessageDialog(
                         this,
                         "Your support request has been submitted successfully.\n\n"
                         + "An administrator will review your request.",
@@ -233,8 +250,19 @@ public class AdminSupportWindow extends JFrame {
                 txtIssue.setText("");
 
                 txtName.requestFocus();
+            } catch (SQLException ex) {
+
+                JOptionPane.showMessageDialog(
+                this,
+                "Failed to submit support request.\n\n"
+                + ex.getMessage(),
+                "Database Error",
+                JOptionPane.ERROR_MESSAGE
+                );
             }
-        });
+        }  
+        
+    });
 
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 

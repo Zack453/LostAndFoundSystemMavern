@@ -129,10 +129,9 @@ public class PageHeaderPanel extends JPanel {
 
     btnNotification.addActionListener(e -> {
 
-        new NotificationsWindow();
+        new NotificationsWindow(currentUser);
 
-        java.awt.Window window =
-                SwingUtilities.getWindowAncestor(this);
+        java.awt.Window window = SwingUtilities.getWindowAncestor(this);
 
         if (window != null) {
             window.dispose();
@@ -143,8 +142,7 @@ public class PageHeaderPanel extends JPanel {
 
         new ViewAllPostsWindow(currentUser);
 
-        java.awt.Window window =
-                SwingUtilities.getWindowAncestor(this);
+        java.awt.Window window = SwingUtilities.getWindowAncestor(this);
 
         if (window != null) {
             window.dispose();

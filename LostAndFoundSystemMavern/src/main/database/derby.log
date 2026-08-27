@@ -1,7 +1,7 @@
-Wed Aug 26 16:00:31 SAST 2026 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
+Thu Aug 27 07:48:03 SAST 2026 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Wed Aug 26 16:00:33 SAST 2026:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-01a0-3e5f-5a17-ffffe4d3cb00 
+Thu Aug 27 07:48:06 SAST 2026:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-01a0-41c2-d862-ffffe4d3cb00 
 on database directory D:\LostAndFoundSystemMavern\LostAndFoundSystemMavern\src\main\database\LostAndFoundDatabase with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@70dea4e 
 Loaded from file:/C:/Program%20Files/Java/jdk-23/Db/db-derby-10.14.2.0-bin/lib/derby.jar
 java.vendor=Oracle Corporation
@@ -12,3 +12,9 @@ os.arch=amd64
 os.version=10.0
 derby.system.home=D:\LostAndFoundSystemMavern\LostAndFoundSystemMavern\src\main\database
 Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Thu Aug 27 13:41:57 SAST 2026: Shutting down Derby engine
+----------------------------------------------------------------
+Thu Aug 27 13:41:57 SAST 2026:
+Shutting down instance a816c00e-01a0-41c2-d862-ffffe4d3cb00 on database directory D:\LostAndFoundSystemMavern\LostAndFoundSystemMavern\src\main\database\LostAndFoundDatabase with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@70dea4e 
+----------------------------------------------------------------

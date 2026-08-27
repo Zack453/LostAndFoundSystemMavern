@@ -83,7 +83,7 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         header.getBtnNotification().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                NotificationsWindow notificationsWindow = new NotificationsWindow();
+                NotificationsWindow notificationsWindow = new NotificationsWindow(currentUser);
                 notificationsWindow.setVisible(true);
                 dispose();
             }

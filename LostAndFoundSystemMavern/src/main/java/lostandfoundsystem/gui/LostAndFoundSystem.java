@@ -21,7 +21,7 @@ public class LostAndFoundSystem {
         
        
 
-       /* try {
+        try {
             Connection connection = DBConnection.derbyConnection();
             System.out.println("Connected to database.");
 
@@ -44,7 +44,14 @@ public class LostAndFoundSystem {
                     "LOCATION VARCHAR(255), "+
                     "ITEM_IMAGE BLOB,"+
                     "ITEM_TYPE VARCHAR(255))";
-                 
+            
+            
+                  createTable = "CREATE TABLE NOTIFICATION ("
+                    + "NOTIFICATION_ID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, "
+                    + "PERSON_ID INT, "
+                    + "MESSAGE VARCHAR(500), "
+                    + "STATUS VARCHAR(20), "
+                    + "DATE_CREATED VARCHAR(20))";
                     
                     
                     
@@ -56,7 +63,7 @@ public class LostAndFoundSystem {
 
         } catch (SQLException e) {
             System.out.println("ERROR: " + e);
-        }*/   
+        }
     }
 }
     

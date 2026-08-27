@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import lostandfoundsystem.dao.NotificationDAO;
 
 public class LogInWindow extends JFrame implements ActionListener {
 
@@ -173,6 +174,8 @@ public class LogInWindow extends JFrame implements ActionListener {
 
             // LOGIN RESULT
             if (currentUser != null) {
+                NotificationDAO notificationDAO = new NotificationDAO();
+                notificationDAO.addNotification(currentUser, "Welcome back! You logged in successfully.");
                 JOptionPane.showMessageDialog(
                         this,
                         "Login Successful!",

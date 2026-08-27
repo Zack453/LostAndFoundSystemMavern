@@ -129,7 +129,7 @@ public class PageHeaderPanel extends JPanel {
 
     btnNotification.addActionListener(e -> {
 
-        new NotificationsWindow();
+        new NotificationsWindow(currentUser);
 
         java.awt.Window window =
                 SwingUtilities.getWindowAncestor(this);

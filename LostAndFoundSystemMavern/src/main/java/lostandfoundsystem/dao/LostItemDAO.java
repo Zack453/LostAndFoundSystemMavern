@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import lostandfoundsystem.domain.ReportCard;
 import lostandfoundsystem.connection.DBConnection;
 import lostandfoundsystem.domain.Item;
 import lostandfoundsystem.domain.Report;
@@ -104,38 +106,47 @@ public class LostItemDAO {
         }
     }
     
+    
+    public ArrayList<ReportCard> getAllItems() {
 
+    ArrayList<ReportCard> reports = new ArrayList<>();
+
+    String sql = "SELECT i.ITEM_ID, i.ITEM_NAME, i.CATEGORY, i.DESCRIPTION, i.STATUS, "
+            + "r.REPORT_ID, r.PERSON_ID, r.ITEM_ID, r.DATE_LOST, "
+            + "r.LOCATION, r.ITEM_TYPE, r.ITEM_IMAGE "
+            + "FROM ITEM i "
+            + "JOIN REPORTS r ON i.ITEM_ID = r.ITEM_ID";
+
+    try (Connection con = DBConnection.derbyConnection();
+         PreparedStatement pr = con.prepareStatement(sql);
+         ResultSet rs = pr.executeQuery()) {
+
+        while (rs.next()) {
+
+            ReportCard report = new ReportCard(
+                    rs.getInt(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getString(4),
+                    rs.getString(5),
+                    rs.getInt(6),
+                    rs.getInt(7),
+                    rs.getInt(8),
+                    rs.getString(9),
+                    rs.getString(10),
+                    rs.getString(11),
+                    rs.getBytes(12)
+            );
+
+            reports.add(report);
+        }
+
+    } catch (SQLException e) {
+        System.out.println("ERROR fetching items: " + e);
+    }
+
+    return reports;
+}
     
         
        } 
-        
-        
-        
-        
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-

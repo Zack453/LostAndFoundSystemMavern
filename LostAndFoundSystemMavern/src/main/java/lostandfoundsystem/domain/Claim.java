@@ -10,19 +10,17 @@ public class Claim {
     private int itemId;
     private String status;
     private String proof;
+    private String itemName;
 
     LocalDate dateObj = LocalDate.now();
-
-    DateTimeFormatter formatDate =
-            DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-    private String date =
-            dateObj.format(formatDate);
+    DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private String date = dateObj.format(formatDate);
 
     public Claim() {
     }
 
     public Claim(
+            String itemName,
             int claimId,
             int personId,
             int itemId,
@@ -34,6 +32,7 @@ public class Claim {
         this.itemId = itemId;
         this.date = date;
         this.status = status;
+        this.itemName = itemName;
     }
 
     public int getClaimId() {
@@ -63,6 +62,10 @@ public class Claim {
     public DateTimeFormatter getFormatDate() {
         return formatDate;
     }
+    
+    public String getItemName() {
+        return itemName;
+    }
 
     public void setClaimId(int claimId) {
         this.claimId = claimId;
@@ -87,4 +90,9 @@ public class Claim {
     public void setProof(String proof) {
         this.proof = proof;
     }
+    
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+    
 }

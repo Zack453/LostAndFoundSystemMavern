@@ -6,11 +6,17 @@ import lostandfoundsystem.components.SideBarPanel;
 import lostandfoundsystem.constants.Colors;
 import lostandfoundsystem.domain.User;
 
+import lostandfoundsystem.dao.ClaimDAO;
+import lostandfoundsystem.domain.Claim;
+import lostandfoundsystem.dao.LostItemDAO;
+import lostandfoundsystem.domain.ReportCard;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -18,27 +24,19 @@ import javax.swing.border.LineBorder;
 public class Dashboard extends JFrame implements ActionListener, ItemListener {
 
     private User currentUser;
-    
+
     private JPanel sidebarPanel;
     private JPanel topPanel;
     private JPanel contentPanel;
 
-    private final Object[][] claimData = {
-        {"iPhone 11", "23-Jan-2026", "Pending", Colors.YELLOW_STATUS_COLOR},
-        {"Student Card", "28-Jan-2026", "Approved", new Color(30, 180, 60)},
-        {"Laptop", "02-Feb-2026", "Rejected", Color.RED}
-    };
+    private ClaimDAO claimDAO;
+    private LostItemDAO lostItemDAO;
 
-    private final String[][] postData = {
-        {"Phone", "22-May-26", "Library", "Pending"},
-        {"Wallet", "13-Jun-26", "Court Yard", "Pending"},
-        {"Backpack", "18-Jun-26", "Student Centre", "Claimed"},
-        {"Calculator", "20-Jun-26", "Engineering Block", "Pending"}
-    };
-    
     // Now able to access current user obj   
     public Dashboard(User currentUser) {
         this.currentUser = currentUser;
+        claimDAO = new ClaimDAO();
+        lostItemDAO = new LostItemDAO();
         guiSetUp();
     }
 
@@ -65,7 +63,7 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
     }
 
     private JPanel createTopPanel() {
-        
+
         JPanel top = new JPanel(new BorderLayout());
         top.setOpaque(false);
 
@@ -95,7 +93,7 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
     }
 
     private JPanel createContentPanel() {
-        
+
         JPanel panel = new JPanel();
         panel.setBackground(new Color(220, 220, 220));
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -113,8 +111,25 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         JPanel claimCards = new JPanel(new GridLayout(1, 3, 20, 20));
         claimCards.setOpaque(false);
 
-        for (Object[] claim : claimData) {
-            claimCards.add(createClaimCard((String) claim[0], (String) claim[1], (String) claim[2], (Color) claim[3]));
+        ArrayList<Claim> dashclaims = claimDAO.getLatestClaims();
+
+        for (Claim claim : dashclaims) {
+            Color statusColor;
+            if (claim.getStatus().equalsIgnoreCase("Approved")) {
+                statusColor = new Color(30, 180, 60);
+            } else if (claim.getStatus().equalsIgnoreCase("Rejected")) {
+                statusColor = Color.RED;
+            } else {
+                statusColor = Colors.YELLOW_STATUS_COLOR;
+            }
+            claimCards.add(
+                    createClaimCard(
+                            claim.getItemName(),
+                            claim.getDate(),
+                            claim.getStatus(),
+                            statusColor
+                    )
+            );
         }
 
         panel.add(claimCards);
@@ -132,8 +147,17 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         JPanel cards = new JPanel(new GridLayout(2, 2, 20, 20));
         cards.setOpaque(false);
 
-        for (String[] post : postData) {
-            cards.add(createPostCard(post[0], post[1], post[2], post[3]));
+        ArrayList<ReportCard> dashPosts = lostItemDAO.getLatestItems();
+
+        for (ReportCard post : dashPosts) {
+            cards.add(
+                    createPostCard(
+                            post.getItemName(),
+                            post.getDateLost(),
+                            post.getLocation(),
+                            post.getStatus()
+                    )
+            );
         }
 
         panel.add(cards);

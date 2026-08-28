@@ -17,8 +17,8 @@ public class ClaimDAO {
 
         try {
 
-            connection =
-                    DBConnection.derbyConnection();
+            connection
+                    = DBConnection.derbyConnection();
 
         } catch (SQLException e) {
 
@@ -31,19 +31,17 @@ public class ClaimDAO {
     /*
      * SAVE NEW CLAIM
      */
-
     public boolean saveClaim(
             Claim claim) {
 
-        String sql =
-                "INSERT INTO CLAIM "
+        String sql
+                = "INSERT INTO CLAIM "
                 + "(PERSON_ID, ITEM_ID, DATE, STATUS, PROOF) "
                 + "VALUES (?, ?, ?, ?, ?)";
 
         try (
-                PreparedStatement ps =
-                        connection.prepareStatement(sql)
-        ) {
+                PreparedStatement ps
+                = connection.prepareStatement(sql)) {
 
             ps.setInt(
                     1,
@@ -87,15 +85,14 @@ public class ClaimDAO {
     /*
      * GET CLAIMS FOR CURRENT USER
      */
-
     public ArrayList<Claim> getClaimsByPerson(
             int personId) {
 
-        ArrayList<Claim> claims =
-                new ArrayList<>();
+        ArrayList<Claim> claims
+                = new ArrayList<>();
 
-        String sql =
-                "SELECT CLAIM_ID, "
+        String sql
+                = "SELECT CLAIM_ID, "
                 + "PERSON_ID, "
                 + "ITEM_ID, "
                 + "DATE, "
@@ -105,22 +102,21 @@ public class ClaimDAO {
                 + "WHERE PERSON_ID = ?";
 
         try (
-                PreparedStatement ps =
-                        connection.prepareStatement(sql)
-        ) {
+                PreparedStatement ps
+                = connection.prepareStatement(sql)) {
 
             ps.setInt(
                     1,
                     personId
             );
 
-            ResultSet rs =
-                    ps.executeQuery();
+            ResultSet rs
+                    = ps.executeQuery();
 
             while (rs.next()) {
 
-                Claim claim =
-                        new Claim();
+                Claim claim
+                        = new Claim();
 
                 claim.setClaimId(
                         rs.getInt(
@@ -187,7 +183,6 @@ public class ClaimDAO {
      * so that the status is the same
      * everywhere in the application.
      */
-
     public boolean updateClaim(
             int claimId,
             int itemId,
@@ -195,15 +190,15 @@ public class ClaimDAO {
             String status,
             String proof) {
 
-        String claimSQL =
-                "UPDATE CLAIM "
+        String claimSQL
+                = "UPDATE CLAIM "
                 + "SET DATE = ?, "
                 + "STATUS = ?, "
                 + "PROOF = ? "
                 + "WHERE CLAIM_ID = ?";
 
-        String itemSQL =
-                "UPDATE ITEM "
+        String itemSQL
+                = "UPDATE ITEM "
                 + "SET STATUS = ? "
                 + "WHERE ITEM_ID = ?";
 
@@ -213,7 +208,6 @@ public class ClaimDAO {
              * Turn off automatic commit so
              * both updates happen together.
              */
-
             connection.setAutoCommit(
                     false
             );
@@ -221,72 +215,67 @@ public class ClaimDAO {
             /*
              * UPDATE CLAIM
              */
-
             try (
-                    PreparedStatement ps =
-                            connection.prepareStatement(
-                                    claimSQL
-                            )
-            ) {
+                    PreparedStatement ps
+                    = connection.prepareStatement(
+                            claimSQL
+                    )) {
 
-                ps.setString(
-                        1,
-                        date
-                );
+                        ps.setString(
+                                1,
+                                date
+                        );
 
-                ps.setString(
-                        2,
-                        status
-                );
+                        ps.setString(
+                                2,
+                                status
+                        );
 
-                ps.setString(
-                        3,
-                        proof
-                );
+                        ps.setString(
+                                3,
+                                proof
+                        );
 
-                ps.setInt(
-                        4,
-                        claimId
-                );
+                        ps.setInt(
+                                4,
+                                claimId
+                        );
 
-                ps.executeUpdate();
-            }
+                        ps.executeUpdate();
+                    }
 
-            /*
+                    /*
              * UPDATE ITEM
-             */
-
-            try (
-                    PreparedStatement ps =
-                            connection.prepareStatement(
+                     */
+                    try (
+                            PreparedStatement ps
+                            = connection.prepareStatement(
                                     itemSQL
-                            )
-            ) {
+                            )) {
 
-                ps.setString(
-                        1,
-                        status
-                );
+                                ps.setString(
+                                        1,
+                                        status
+                                );
 
-                ps.setInt(
-                        2,
-                        itemId
-                );
+                                ps.setInt(
+                                        2,
+                                        itemId
+                                );
 
-                ps.executeUpdate();
-            }
+                                ps.executeUpdate();
+                            }
 
-            /*
+                            /*
              * Save both changes.
-             */
+                             */
+                            connection.commit();
 
-            connection.commit();
+                            connection.setAutoCommit(
+                                    true
+                            );
 
-            connection.setAutoCommit(
-                    true
-            );
-
-            return true;
+                            return true;
 
         } catch (SQLException e) {
 
@@ -294,7 +283,6 @@ public class ClaimDAO {
              * If something goes wrong,
              * undo both changes.
              */
-
             try {
 
                 connection.rollback();
@@ -333,36 +321,123 @@ public class ClaimDAO {
     /*
      * DELETE / CANCEL CLAIM
      */
-
     public boolean deleteClaim(
             int claimId) {
 
-        String sql =
-                "DELETE FROM CLAIM "
+        String sql
+                = "DELETE FROM CLAIM "
                 + "WHERE CLAIM_ID = ?";
 
         try (
-                PreparedStatement ps =
-                        connection.prepareStatement(
-                                sql
-                        )
-        ) {
+                PreparedStatement ps
+                = connection.prepareStatement(
+                        sql
+                )) {
 
-            ps.setInt(
-                    1,
-                    claimId
-            );
+                    ps.setInt(
+                            1,
+                            claimId
+                    );
 
-            return ps.executeUpdate() > 0;
+                    return ps.executeUpdate() > 0;
+
+                } catch (SQLException e) {
+
+                    System.out.println(
+                            "ERROR deleting claim: "
+                            + e
+                    );
+
+                    return false;
+                }
+    }
+
+    //230939023 - Dashboard     
+    public ArrayList<Claim> getAllClaims() {
+
+        ArrayList<Claim> claims = new ArrayList<>();
+
+        String sql
+                = "SELECT C.CLAIM_ID, "
+                + "C.PERSON_ID, "
+                + "C.ITEM_ID, "
+                + "C.DATE, "
+                + "C.STATUS, "
+                + "C.PROOF, "
+                + "I.NAME AS ITEM_NAME "
+                + "FROM CLAIM C "
+                + "JOIN ITEM I "
+                + "ON C.ITEM_ID = I.ITEM_ID "
+                + "ORDER BY C.CLAIM_ID DESC";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Claim claim = new Claim();
+                claim.setClaimId(rs.getInt("CLAIM_ID"));
+                claim.setPersonId(rs.getInt("PERSON_ID"));
+                claim.setItemId(rs.getInt("ITEM_ID"));
+                claim.setDate(rs.getString("DATE"));
+                claim.setStatus(rs.getString("STATUS"));
+                claim.setProof(rs.getString("PROOF"));
+                claim.setItemName(rs.getString("ITEM_NAME"));
+                claims.add(claim);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("ERROR loading claims: " + e);
+        }
+
+        return claims;
+    }
+
+    /*
+ * GET LATEST 3 CLAIMS
+ * Used by Dashboard.
+     */
+    public ArrayList<Claim> getLatestClaims() {
+
+        ArrayList<Claim> claims = new ArrayList<>();
+
+        String sql
+                = "SELECT C.CLAIM_ID, "
+                + "C.PERSON_ID, "
+                + "C.ITEM_ID, "
+                + "C.DATE, "
+                + "C.STATUS, "
+                + "C.PROOF, "
+                + "I.ITEM_NAME "
+                + "FROM CLAIM C "
+                + "JOIN ITEM I "
+                + "ON C.ITEM_ID = I.ITEM_ID "
+                + "ORDER BY C.CLAIM_ID DESC "
+                + "FETCH FIRST 3 ROWS ONLY";
+
+        try (
+                PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+
+                Claim claim = new Claim();
+                claim.setClaimId(rs.getInt("CLAIM_ID"));
+                claim.setPersonId(rs.getInt("PERSON_ID"));
+                claim.setItemId(rs.getInt("ITEM_ID"));
+                claim.setDate(rs.getString("DATE"));
+                claim.setStatus(rs.getString("STATUS"));
+                claim.setProof(rs.getString("PROOF"));
+                claim.setItemName(rs.getString("ITEM_NAME"));
+                claims.add(claim);
+            }
 
         } catch (SQLException e) {
 
             System.out.println(
-                    "ERROR deleting claim: "
+                    "ERROR loading latest claims: "
                     + e
             );
-
-            return false;
         }
+
+        return claims;
     }
+
 }

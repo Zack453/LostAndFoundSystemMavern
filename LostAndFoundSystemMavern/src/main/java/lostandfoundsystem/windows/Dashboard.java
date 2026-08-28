@@ -152,6 +152,7 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         for (ReportCard post : dashPosts) {
             cards.add(
                     createPostCard(
+                            post.getItemID(),
                             post.getItemName(),
                             post.getDateLost(),
                             post.getLocation(),
@@ -189,7 +190,7 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         return card;
     }
 
-    private JPanel createPostCard(String item, String date, String location, String status) {
+    private JPanel createPostCard(int itemId, String item, String date, String location, String status) {
         JPanel card = new JPanel(new BorderLayout(10, 10));
         card.setBackground(Color.WHITE);
         card.setPreferredSize(new Dimension(300, 180));
@@ -233,6 +234,18 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
 
         JButton btnClaim = new JButton("Claim");
         JButton btnView = new JButton("View");
+
+        btnClaim.addActionListener(e -> {
+            ClaimWindow claimsWindow = new ClaimWindow(currentUser);
+            claimsWindow.setVisible(true);
+            dispose();
+        });
+
+        btnView.addActionListener(e -> {
+            ItemDetailsWindow itemDetailsWindow = new ItemDetailsWindow(currentUser,itemId);
+            itemDetailsWindow.setVisible(true);
+            dispose();
+        });
 
         buttons.add(btnClaim);
         buttons.add(btnView);

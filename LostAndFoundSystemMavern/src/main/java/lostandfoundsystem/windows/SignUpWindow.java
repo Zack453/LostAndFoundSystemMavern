@@ -246,7 +246,8 @@ public class SignUpWindow extends JFrame implements ActionListener {
                         password,
                         securityQuestion,
                         answer,
-                        idNum
+                        idNum,
+                        role
                 );
 
                 saved = userDAO.saveStudent(student);
@@ -261,6 +262,7 @@ public class SignUpWindow extends JFrame implements ActionListener {
                         password,
                         securityQuestion,
                         answer,
+                        role,
                         idNum,
                         "Not Assigned"
                 );
@@ -277,6 +279,7 @@ public class SignUpWindow extends JFrame implements ActionListener {
                         password,
                         securityQuestion,
                         answer,
+                        role,
                         idNum,
                         "Not Assigned"
                 );
@@ -291,6 +294,7 @@ public class SignUpWindow extends JFrame implements ActionListener {
                         surname,
                         password,
                         securityQuestion,
+                        role,
                         answer,
                         idNum,
                         "Not Assigned",

@@ -34,11 +34,10 @@ public class UserDAO {
         }
     }
 
-    public boolean saveStudent(Student student) {
-
+public boolean saveStudent(Student student) {
         String sql = "INSERT INTO STUDENT "
-                + "(person_id, name, surname, password, sec_question, sec_answer, student_number) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                + "(person_id, name, surname, password, sec_question, sec_answer, role, student_number) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"; // Fixed: 8 question marks for 8 columns
 
         try {
             pstmt = con.prepareStatement(sql);
@@ -48,14 +47,12 @@ public class UserDAO {
             pstmt.setString(4, student.getPassword());
             pstmt.setString(5, student.getSecQuestion());
             pstmt.setString(6, student.getSecAnswer());
-            pstmt.setString(7, student.getStudentNumber());
+            pstmt.setString(7, student.getRole());
+            pstmt.setString(8, student.getStudentNumber());
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "SQL Error: " + ex.getMessage()
-            );
+            JOptionPane.showMessageDialog(null, "SQL Error: " + ex.getMessage());
             return false;
         } finally {
             closeStatement();
@@ -63,10 +60,9 @@ public class UserDAO {
     }
 
     public boolean saveStaff(Staff staff) {
-
         String sql = "INSERT INTO STAFF "
-                + "(person_id, name, surname, password, sec_question, sec_answer, employee_id, department) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                + "(person_id, name, surname, password, sec_question, sec_answer, role, employee_id, department) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"; // Fixed: 9 question marks
 
         try {
             pstmt = con.prepareStatement(sql);
@@ -76,15 +72,13 @@ public class UserDAO {
             pstmt.setString(4, staff.getPassword());
             pstmt.setString(5, staff.getSecQuestion());
             pstmt.setString(6, staff.getSecAnswer());
-            pstmt.setString(7, staff.getEmployeeId());
-            pstmt.setString(8, staff.getDepartment());
+            pstmt.setString(7, staff.getRole());
+            pstmt.setString(8, staff.getEmployeeId()); // Fixed: Index 8
+            pstmt.setString(9, staff.getDepartment()); // Fixed: Index 9
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "SQL Error: " + ex.getMessage()
-            );
+            JOptionPane.showMessageDialog(null, "SQL Error: " + ex.getMessage());
             return false;
         } finally {
             closeStatement();
@@ -92,10 +86,9 @@ public class UserDAO {
     }
 
     public boolean saveLecturer(Lecturer lecturer) {
-
         String sql = "INSERT INTO LECTURER "
-                + "(person_id, name, surname, password, sec_question, sec_answer, employee_id, department) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                + "(person_id, name, surname, password, sec_question, sec_answer, role, employee_id, department) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"; // Fixed: 9 question marks
 
         try {
             pstmt = con.prepareStatement(sql);
@@ -105,15 +98,13 @@ public class UserDAO {
             pstmt.setString(4, lecturer.getPassword());
             pstmt.setString(5, lecturer.getSecQuestion());
             pstmt.setString(6, lecturer.getSecAnswer());
-            pstmt.setString(7, lecturer.getEmployeeId());
-            pstmt.setString(8, lecturer.getDepartment());
+            pstmt.setString(7, lecturer.getRole());
+            pstmt.setString(8, lecturer.getEmployeeId());
+            pstmt.setString(9, lecturer.getDepartment());
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "SQL Error: " + ex.getMessage()
-            );
+            JOptionPane.showMessageDialog(null, "SQL Error: " + ex.getMessage());
             return false;
         } finally {
             closeStatement();
@@ -121,13 +112,11 @@ public class UserDAO {
     }
 
     public boolean saveAdmin(Admin admin) {
-
         String sql = "INSERT INTO ADMIN "
-                + "(person_id, name, surname, password, sec_question, sec_answer, employee_id, department, access_level) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "(person_id, name, surname, password, sec_question, sec_answer, role, employee_id, department, access_level) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // Fixed: 10 question marks
 
         try {
-
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, admin.getPersonId());
             pstmt.setString(2, admin.getName());
@@ -135,16 +124,14 @@ public class UserDAO {
             pstmt.setString(4, admin.getPassword());
             pstmt.setString(5, admin.getSecQuestion());
             pstmt.setString(6, admin.getSecAnswer());
-            pstmt.setString(7, admin.getEmployeeId());
-            pstmt.setString(8, admin.getDepartment());
-            pstmt.setInt(9, admin.getAccessLevel());
+            pstmt.setString(7, admin.getRole());
+            pstmt.setString(8, admin.getEmployeeId());
+            pstmt.setString(9, admin.getDepartment());
+            pstmt.setInt(10, admin.getAccessLevel());
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "SQL Error: " + ex.getMessage()
-            );
+            JOptionPane.showMessageDialog(null, "SQL Error: " + ex.getMessage());
             return false;
         } finally {
             closeStatement();
@@ -177,7 +164,8 @@ public class UserDAO {
                             rs.getString("password"),
                             rs.getString("sec_question"),
                             rs.getString("sec_answer"),
-                            rs.getString("student_number")
+                            rs.getString("student_number"),
+                            rs.getString("role")
                     );
                 }
 
@@ -190,6 +178,7 @@ public class UserDAO {
                             rs.getString("password"),
                             rs.getString("sec_question"),
                             rs.getString("sec_answer"),
+                            rs.getString("role"),
                             rs.getString("employee_id"),
                             rs.getString("department")
                     );
@@ -204,6 +193,7 @@ public class UserDAO {
                             rs.getString("password"),
                             rs.getString("sec_question"),
                             rs.getString("sec_answer"),
+                            rs.getString("role"),
                             rs.getString("employee_id"),
                             rs.getString("department")
                     );
@@ -218,6 +208,7 @@ public class UserDAO {
                             rs.getString("password"),
                             rs.getString("sec_question"),
                             rs.getString("sec_answer"),
+                            rs.getString("role"),
                             rs.getString("employee_id"),
                             rs.getString("department"),
                             rs.getInt("access_level")

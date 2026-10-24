@@ -17,7 +17,8 @@ public class Student extends User {
             String password,
             String secQuestion,
             String secAnswer,
-            String studentNumber
+            String studentNumber,
+            String role
     ) {
         super(
                 personId,
@@ -25,7 +26,8 @@ public class Student extends User {
                 surname,
                 password,
                 secQuestion,
-                secAnswer
+                secAnswer,
+                role
         );
 
         this.studentNumber = studentNumber;

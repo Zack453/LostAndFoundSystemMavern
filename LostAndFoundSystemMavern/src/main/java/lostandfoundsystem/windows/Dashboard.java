@@ -1,4 +1,3 @@
-//230939023
 package lostandfoundsystem.windows;
 
 import lostandfoundsystem.components.PageHeaderPanel;
@@ -63,7 +62,6 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
     }
 
     private JPanel createTopPanel() {
-
         JPanel top = new JPanel(new BorderLayout());
         top.setOpaque(false);
 
@@ -93,11 +91,33 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
     }
 
     private JPanel createContentPanel() {
-
         JPanel panel = new JPanel();
         panel.setBackground(new Color(220, 220, 220));
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        // --- ADMIN SECTION: View Logged Issues Button ---
+        if (currentUser != null && "Admin".equalsIgnoreCase(currentUser.getRole())) {
+            JPanel adminActionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+            adminActionPanel.setOpaque(false);
+
+            JButton btnViewIssues = new JButton("Check Logged Issues");
+            btnViewIssues.setBackground(new Color(220, 50, 50));
+            btnViewIssues.setForeground(Color.WHITE);
+            btnViewIssues.setFont(new Font("Arial", Font.BOLD, 14));
+            btnViewIssues.setFocusPainted(false);
+            btnViewIssues.setBorder(new EmptyBorder(10, 20, 10, 20));
+
+            btnViewIssues.addActionListener(e -> {
+                AdminReportWindow issuesWindow = new AdminReportWindow(currentUser);
+                issuesWindow.setVisible(true);
+                dispose();
+            });
+
+            adminActionPanel.add(btnViewIssues);
+            panel.add(adminActionPanel);
+            panel.add(Box.createVerticalStrut(20));
+        }
 
         JLabel claims = new JLabel("View All Claims");
         claims.setOpaque(true);
@@ -242,7 +262,7 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         });
 
         btnView.addActionListener(e -> {
-            ItemDetailsWindow itemDetailsWindow = new ItemDetailsWindow(currentUser,itemId);
+            ItemDetailsWindow itemDetailsWindow = new ItemDetailsWindow(currentUser, itemId);
             itemDetailsWindow.setVisible(true);
             dispose();
         });

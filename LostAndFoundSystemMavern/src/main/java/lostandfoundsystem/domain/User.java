@@ -20,6 +20,7 @@ public class User {
     private String password;
     private String secQuestion;
     private String secAnswer;
+    private String role; 
 
     public User() {
     }
@@ -30,7 +31,8 @@ public class User {
             String surname,
             String password,
             String secQuestion,
-            String secAnswer
+            String secAnswer,
+            String role
     ) {
         this.personId = personId;
         this.name = name;
@@ -38,6 +40,7 @@ public class User {
         this.password = password;
         this.secQuestion = secQuestion;
         this.secAnswer = secAnswer;
+        this.role = role;
     }
 
     public int getPersonId() {
@@ -88,6 +91,14 @@ public class User {
         this.secAnswer = secAnswer;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+    
     @Override
     public String toString() {
         return "User{"

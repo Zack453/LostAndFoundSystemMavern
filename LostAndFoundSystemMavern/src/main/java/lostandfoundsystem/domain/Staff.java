@@ -18,6 +18,7 @@ public class Staff extends User {
             String password,
             String secQuestion,
             String secAnswer,
+            String role,
             String employeeId,
             String department
     ) {
@@ -27,7 +28,8 @@ public class Staff extends User {
                 surname,
                 password,
                 secQuestion,
-                secAnswer
+                secAnswer,
+                role
         );
 
         this.employeeId = employeeId;

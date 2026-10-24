@@ -15,6 +15,7 @@ public class Lecturer extends Staff {
             String password,
             String secQuestion,
             String secAnswer,
+            String role,
             String employeeId,
             String department
     ) {
@@ -25,6 +26,7 @@ public class Lecturer extends Staff {
                 password,
                 secQuestion,
                 secAnswer,
+                role,
                 employeeId,
                 department
         );

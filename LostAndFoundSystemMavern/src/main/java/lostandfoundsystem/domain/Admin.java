@@ -24,6 +24,7 @@ public class Admin extends Staff {
             String password,
             String secQuestion,
             String secAnswer,
+            String role,
             String employeeId,
             String department,
             int accessLevel
@@ -35,6 +36,7 @@ public class Admin extends Staff {
                 password,
                 secQuestion,
                 secAnswer,
+                role,
                 employeeId,
                 department
         );

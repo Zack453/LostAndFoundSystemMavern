@@ -40,6 +40,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lostandfoundsystem.dao.LostItemDAO;
+import lostandfoundsystem.dao.ReportDao;
 import lostandfoundsystem.domain.Item;
 import lostandfoundsystem.domain.Report;
 
@@ -74,6 +75,7 @@ public class ReportFoundItemWindow extends JFrame implements ActionListener, Mou
 
     Item item = new Item();
     LostItemDAO itemDao = new LostItemDAO();
+    ReportDao reportDao = new ReportDao();
     Report report = new Report();
     
     public ReportFoundItemWindow(User currentUser) {
@@ -398,7 +400,7 @@ public class ReportFoundItemWindow extends JFrame implements ActionListener, Mou
         
         
         
-        itemDao.submitReport(item,report,currentUser);
+        reportDao.submitReport(item,report,currentUser);
         
       
         

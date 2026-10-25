@@ -15,6 +15,7 @@ import javax.swing.border.LineBorder;
 import java.util.ArrayList;
 
 import lostandfoundsystem.dao.LostItemDAO;
+import lostandfoundsystem.dao.ReportDao;
 import lostandfoundsystem.domain.ReportCard;
 import lostandfoundsystem.domain.User;
 
@@ -22,6 +23,7 @@ public class ViewAllPostsWindow extends JFrame {
 
     private User currentUser;
     private LostItemDAO lostItemDAO;
+    private ReportDao reportDao;
 
     private JPanel sidebarPanel;
     private JPanel headerPanel;
@@ -32,13 +34,10 @@ public class ViewAllPostsWindow extends JFrame {
 
     private ArrayList<ReportCard> allReports;
 
-    public ViewAllPostsWindow(
-            User currentUser) {
-
+    public ViewAllPostsWindow(User currentUser) {
         this.currentUser = currentUser;
-
-        this.lostItemDAO =
-                new LostItemDAO();
+        this.lostItemDAO = new LostItemDAO();
+        this.reportDao = new ReportDao();
 
         guiSetUp();
     }
@@ -217,97 +216,41 @@ public class ViewAllPostsWindow extends JFrame {
                 Colors.DARK_BLUE_TEXT_COLOR
         );
 
-        cmbFilter =
-                new JComboBox<>();
-
+        cmbFilter = new JComboBox<>();
         cmbFilter.addItem("All");
         cmbFilter.addItem("Lost");
         cmbFilter.addItem("Found");
         cmbFilter.addItem("Claimed");
 
-        cmbFilter.setPreferredSize(
-                new Dimension(
-                        170,
-                        35
-                )
-        );
-
-        cmbFilter.setFont(
-                Fonts.Medium.deriveFont(
-                        14f
-                )
-        );
+        cmbFilter.setPreferredSize(new Dimension(170, 35));
+        cmbFilter.setFont(Fonts.Medium.deriveFont(14f));
 
         cmbFilter.addActionListener(e -> {
-
-            String selectedFilter =
-                    (String)
-                    cmbFilter.getSelectedItem();
-
-            filterItems(
-                    selectedFilter
-            );
+            String selectedFilter = (String)cmbFilter.getSelectedItem();
+            filterItems(selectedFilter);
         });
 
-        filterPanel.add(
-                lblFilter
-        );
-
-        filterPanel.add(
-                Box.createHorizontalStrut(
-                        15
-                )
-        );
-
-        filterPanel.add(
-                cmbFilter
-        );
+        filterPanel.add(lblFilter);
+        filterPanel.add(Box.createHorizontalStrut(15));
+        filterPanel.add(cmbFilter);
 
         return filterPanel;
     }
 
     private JScrollPane createItemsPanel() {
 
-        itemsPanel =
-                new JPanel();
+        itemsPanel = new JPanel();
+        itemsPanel.setLayout(new BoxLayout(itemsPanel,BoxLayout.Y_AXIS));
+        itemsPanel.setBackground(new Color(240, 240, 240));
 
-        itemsPanel.setLayout(
-                new BoxLayout(
-                        itemsPanel,
-                        BoxLayout.Y_AXIS
-                )
-        );
+        allReports = reportDao.getAllItems();
+        displayReports(allReports);
 
-        itemsPanel.setBackground(
-                new Color(240, 240, 240)
-        );
-
-        allReports =
-                lostItemDAO.getAllItems();
-
-        displayReports(
-                allReports
-        );
-
-        JScrollPane scrollPane =
-                new JScrollPane(
-                        itemsPanel
-                );
-
+        JScrollPane scrollPane = new JScrollPane(itemsPanel);
         scrollPane.setBorder(null);
-
-        scrollPane.setVerticalScrollBarPolicy(
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS
-        );
-
-        scrollPane.setHorizontalScrollBarPolicy(
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
-        );
-
-        scrollPane.getVerticalScrollBar()
-                .setUnitIncrement(
-                        12
-                );
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(12);
 
         return scrollPane;
     }
@@ -569,109 +512,40 @@ public class ViewAllPostsWindow extends JFrame {
             );
         }
 
-        detailsPanel.add(
-                lblItem
-        );
+        detailsPanel.add(lblItem);
+        detailsPanel.add(lblDate);
+        detailsPanel.add(lblLocation);
+        detailsPanel.add(lblStatus);
 
-        detailsPanel.add(
-                lblDate
-        );
-
-        detailsPanel.add(
-                lblLocation
-        );
-
-        detailsPanel.add(
-                lblStatus
-        );
-
-        JPanel buttonPanel =
-                new JPanel(
-                        new FlowLayout(
-                                FlowLayout.RIGHT
-                        )
-                );
-
+        JPanel buttonPanel =new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.setOpaque(false);
+        JButton btnView =new JButton("View");
+        JButton btnDelete =new JButton("Delete");
+        
+        btnView.setFont(Fonts.Bold.deriveFont(13f));
 
-        JButton btnView =
-                new JButton(
-                        "View"
-                );
-
-        JButton btnDelete =
-                new JButton(
-                        "Delete"
-                );
-
-        btnView.setFont(
-                Fonts.Bold.deriveFont(
-                        13f
-                )
-        );
-
-        btnDelete.setFont(
-                Fonts.Bold.deriveFont(
-                        13f
-                )
-        );
-
-        btnView.setBackground(
-                Colors.DARK_BLUE_TEXT_COLOR
-        );
-
-        btnDelete.setBackground(
-                Colors.DARK_BLUE_TEXT_COLOR
-        );
-
-        btnView.setForeground(
-                Color.WHITE
-        );
-
-        btnDelete.setForeground(
-                Color.WHITE
-        );
+        btnDelete.setFont(Fonts.Bold.deriveFont(13f));
+        btnView.setBackground(Colors.DARK_BLUE_TEXT_COLOR);
+        btnDelete.setBackground(Colors.DARK_BLUE_TEXT_COLOR);
+        btnView.setForeground(Color.WHITE);
+        btnDelete.setForeground(Color.WHITE);
 
         btnView.setFocusPainted(false);
-
         btnDelete.setFocusPainted(false);
-
-        btnView.setPreferredSize(
-                new Dimension(
-                        100,
-                        30
-                )
-        );
-
-        btnDelete.setPreferredSize(
-                new Dimension(
-                        100,
-                        30
-                )
-        );
-
-        /*
-         * VIEW BUTTON
-         */
-
+        btnView.setPreferredSize(new Dimension(100,30));
+        btnDelete.setPreferredSize(new Dimension(100,30));
+ 
+        
+//        VIEW BUTTONS
         btnView.addActionListener(e -> {
-
-            new ItemDetailsWindow(
-                    currentUser,
-                    itemId
-            );
-
+            new ItemDetailsWindow(currentUser,itemId);
             dispose();
         });
-
-        /*
-         * DELETE BUTTON
-         */
-
+        
+//        DELETE BUTTON
         btnDelete.addActionListener(e -> {
 
-            int result =
-                    JOptionPane.showConfirmDialog(
+            int result = JOptionPane.showConfirmDialog(
                             this,
                             "Are you sure you want to delete this post?",
                             "Delete Post",
@@ -679,9 +553,7 @@ public class ViewAllPostsWindow extends JFrame {
                             JOptionPane.WARNING_MESSAGE
                     );
 
-            if (result !=
-                    JOptionPane.YES_OPTION) {
-
+            if (result !=JOptionPane.YES_OPTION) {
                 return;
             }
 
@@ -689,10 +561,7 @@ public class ViewAllPostsWindow extends JFrame {
              * DELETE FROM DATABASE
              */
 
-            boolean deleted =
-                    lostItemDAO.deleteItem(
-                            itemId
-                    );
+            boolean deleted =lostItemDAO.deleteItem(itemId);
 
             if (deleted) {
 
@@ -708,16 +577,10 @@ public class ViewAllPostsWindow extends JFrame {
                  * the database.
                  */
 
-                allReports =
-                        lostItemDAO.getAllItems();
+                allReports = reportDao.getAllItems();
 
-                String selectedFilter =
-                        (String)
-                        cmbFilter.getSelectedItem();
-
-                filterItems(
-                        selectedFilter
-                );
+                String selectedFilter = (String)cmbFilter.getSelectedItem();
+                filterItems(selectedFilter);
 
             } else {
 
@@ -730,36 +593,15 @@ public class ViewAllPostsWindow extends JFrame {
             }
         });
 
-        buttonPanel.add(
-                btnView
-        );
+        buttonPanel.add(btnView);
+        buttonPanel.add(btnDelete);
+        
+        card.add(detailsPanel,BorderLayout.CENTER);
+        card.add(buttonPanel,BorderLayout.SOUTH);
+        
+        cardWrapper.add(card);
+        cardWrapper.add(Box.createVerticalStrut(15));
 
-        buttonPanel.add(
-                btnDelete
-        );
-
-        card.add(
-                detailsPanel,
-                BorderLayout.CENTER
-        );
-
-        card.add(
-                buttonPanel,
-                BorderLayout.SOUTH
-        );
-
-        cardWrapper.add(
-                card
-        );
-
-        cardWrapper.add(
-                Box.createVerticalStrut(
-                        15
-                )
-        );
-
-        itemsPanel.add(
-                cardWrapper
-        );
+        itemsPanel.add(cardWrapper);
     }
 }

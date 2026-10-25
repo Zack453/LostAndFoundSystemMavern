@@ -1,4 +1,3 @@
-// 230939023
 package lostandfoundsystem.components;
 
 import lostandfoundsystem.constants.Colors;
@@ -23,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 
+import lostandfoundsystem.windows.AdminReportWindow; // Added import for the Admin Report Window
 import lostandfoundsystem.windows.ClaimWindow;
 import lostandfoundsystem.windows.HelpWindow;
 import lostandfoundsystem.windows.ProfileWindow;
@@ -34,7 +34,7 @@ public class SideBarPanel extends JPanel {
     
     private User currentUser;
 
-    private JButton btnReportLostItem, btnReportFoundItem, btnViewAllPosts, btnClaims, btnHelp, btnLogout;
+    private JButton btnReportLostItem, btnReportFoundItem, btnViewAllPosts, btnClaims, btnAdminReport, btnHelp, btnLogout;
 
     public SideBarPanel(User currentUser) {
         this.currentUser = currentUser;
@@ -82,6 +82,7 @@ public class SideBarPanel extends JPanel {
                 Icons.Help
         );
 
+        // Add standard menu buttons
         menu.add(btnReportLostItem);
         menu.add(Box.createVerticalStrut(10));
 
@@ -94,8 +95,30 @@ public class SideBarPanel extends JPanel {
         menu.add(btnClaims);
         menu.add(Box.createVerticalStrut(10));
 
+        // CONDITIONAL: Add Admin Report button ONLY if the current user is an admin
+        // Note: Change `currentUser.isAdmin()` to match your User model method if needed (e.g., currentUser.getRole().equals("Admin"))
+        if (currentUser != null && currentUser.getRole().equalsIgnoreCase("Admin")) {
+            btnAdminReport = createMenuButton(
+                    "Admin Report",
+                    Icons.ViewAllPosts // Replace with Icons.AdminReport if available in your Icons class
+            );
+
+            btnAdminReport.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    AdminReportWindow window = new AdminReportWindow(currentUser);
+                    window.setVisible(true);
+                    closeCurrentWindow();
+                }
+            });
+
+            menu.add(btnAdminReport);
+            menu.add(Box.createVerticalStrut(10));
+        }
+
         menu.add(btnHelp);
 
+        // Action Listeners for standard buttons
         btnReportLostItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

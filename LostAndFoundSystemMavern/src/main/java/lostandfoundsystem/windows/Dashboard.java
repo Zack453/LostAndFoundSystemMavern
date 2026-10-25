@@ -8,6 +8,7 @@ import lostandfoundsystem.domain.User;
 import lostandfoundsystem.dao.ClaimDAO;
 import lostandfoundsystem.domain.Claim;
 import lostandfoundsystem.dao.LostItemDAO;
+import lostandfoundsystem.dao.ReportDao;
 import lostandfoundsystem.domain.ReportCard;
 
 import java.awt.*;
@@ -30,12 +31,14 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
 
     private ClaimDAO claimDAO;
     private LostItemDAO lostItemDAO;
+    private ReportDao reportDAO;
 
     // Now able to access current user obj   
     public Dashboard(User currentUser) {
         this.currentUser = currentUser;
         claimDAO = new ClaimDAO();
         lostItemDAO = new LostItemDAO();
+        reportDAO = new ReportDao();
         guiSetUp();
     }
 
@@ -167,7 +170,7 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         JPanel cards = new JPanel(new GridLayout(2, 2, 20, 20));
         cards.setOpaque(false);
 
-        ArrayList<ReportCard> dashPosts = lostItemDAO.getLatestItems();
+        ArrayList<ReportCard> dashPosts = reportDAO.getLatestItems();
 
         for (ReportCard post : dashPosts) {
             cards.add(

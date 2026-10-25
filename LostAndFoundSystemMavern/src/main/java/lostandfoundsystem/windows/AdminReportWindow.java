@@ -3,7 +3,7 @@ package lostandfoundsystem.windows;
 import lostandfoundsystem.components.PageHeaderPanel;
 import lostandfoundsystem.components.SideBarPanel;
 import lostandfoundsystem.connection.DBConnection;
-import lostandfoundsystem.constants.Colors;
+import lostandfoundsystem.dao.NotificationDAO;
 import lostandfoundsystem.domain.User;
 
 import java.awt.*;
@@ -16,7 +16,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -33,10 +32,15 @@ public class AdminReportWindow extends JFrame implements ActionListener {
     private DefaultTableModel tableModel;
     private JTextArea messageTextArea;
     private JButton btnSendMessage;
+    
     private int selectedReportId = -1;
+    private int selectedPersonId = -1; // Tracks the owner of the selected report for notifications
+
+    private NotificationDAO notificationDAO;
 
     public AdminReportWindow(User currentUser) {
         this.currentUser = currentUser;
+        this.notificationDAO = new NotificationDAO();
         guiSetUp();
         loadReportData();
     }
@@ -121,13 +125,14 @@ public class AdminReportWindow extends JFrame implements ActionListener {
         reportTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         reportTable.setRowHeight(25);
 
-        // Listen for row selections to target specific issues
+        // Listen for row selections to target specific issues and fetch person ID
         reportTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting() && reportTable.getSelectedRow() != -1) {
                     int selectedRow = reportTable.getSelectedRow();
                     selectedReportId = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
+                    selectedPersonId = Integer.parseInt(tableModel.getValueAt(selectedRow, 1).toString());
                     
                     Object existingMsg = tableModel.getValueAt(selectedRow, 6);
                     messageTextArea.setText(existingMsg != null ? existingMsg.toString() : "");
@@ -162,12 +167,16 @@ public class AdminReportWindow extends JFrame implements ActionListener {
         btnSendMessage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (selectedReportId == -1) {
+                if (selectedReportId == -1 || selectedPersonId == -1) {
                     JOptionPane.showMessageDialog(AdminReportWindow.this, "Please select a report from the table first.", "Warning", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
                 String message = messageTextArea.getText().trim();
-                updateReportMessage(selectedReportId, message);
+                if (message.isEmpty()) {
+                    JOptionPane.showMessageDialog(AdminReportWindow.this, "Message cannot be empty.", "Warning", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                updateReportMessageAndNotify(selectedReportId, selectedPersonId, message);
             }
         });
 
@@ -213,7 +222,7 @@ public class AdminReportWindow extends JFrame implements ActionListener {
         }
     }
 
-    private void updateReportMessage(int reportId, String message) {
+    private void updateReportMessageAndNotify(int reportId, int personId, String message) {
         String query = "UPDATE reports SET ADMIN_MESSAGE = ? WHERE REPORT_ID = ?";
 
         try (Connection conn = DBConnection.derbyConnection();
@@ -224,7 +233,14 @@ public class AdminReportWindow extends JFrame implements ActionListener {
 
             int rowsUpdated = pstmt.executeUpdate();
             if (rowsUpdated > 0) {
-                JOptionPane.showMessageDialog(this, "Message successfully sent to Report ID: " + reportId);
+                // Create a temporary User object containing the target user's person ID for NotificationDAO
+                User targetUser = new User();
+                targetUser.setPersonId(personId);
+
+                // Trigger notification addition using your NotificationDAO
+                notificationDAO.addNotification(targetUser, "Admin update regarding Report ID #" + reportId + ": " + message);
+
+                JOptionPane.showMessageDialog(this, "Message successfully sent and notification dispatched to User ID: " + personId);
                 loadReportData(); // Refresh table contents
             }
 

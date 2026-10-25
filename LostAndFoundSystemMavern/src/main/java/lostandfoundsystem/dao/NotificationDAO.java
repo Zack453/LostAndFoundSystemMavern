@@ -68,20 +68,15 @@ public class NotificationDAO {
 
                 Notification notification = new Notification();
 
-                notification.setNotificationId(
-                        rs.getInt("NOTIFICATION_ID"));
+                notification.setNotificationId(rs.getInt("NOTIFICATION_ID"));
 
-                notification.setPersonId(
-                        rs.getInt("PERSON_ID"));
+                notification.setPersonId(rs.getInt("PERSON_ID"));
 
-                notification.setMessage(
-                        rs.getString("MESSAGE"));
+                notification.setMessage(rs.getString("MESSAGE"));
 
-                notification.setStatus(
-                        rs.getString("STATUS"));
+                notification.setStatus(rs.getString("STATUS"));
 
-                notification.setDateCreated(
-                        rs.getString("DATE_CREATED"));
+                notification.setDateCreated(rs.getString("DATE_CREATED"));
 
                 notifications.add(notification);
             }

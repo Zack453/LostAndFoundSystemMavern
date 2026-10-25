@@ -24,30 +24,22 @@ public class NotificationDAO {
         }
     }
 
-    public void addNotification(
-            User currentUser,
-            String message) {
+    public void addNotification(User currentUser,String message) {
 
         String sql =
                 "INSERT INTO NOTIFICATION "
                 + "(PERSON_ID, MESSAGE, STATUS, DATE_CREATED) "
                 + "VALUES (?, ?, ?, ?)";
 
-        try (PreparedStatement ps =
-                connection.prepareStatement(sql)) {
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setInt( 1,currentUser.getPersonId());
-
             ps.setString( 2, message);
-
             ps.setString( 3, "unread");
-
             ps.setString( 4, java.time.LocalDate.now().toString());
-
             ps.executeUpdate();
 
         } catch (SQLException er) {
-
             System.out.println("ERROR adding notification: " + er);
         }
     }

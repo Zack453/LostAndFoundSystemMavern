@@ -308,110 +308,68 @@ public class ReportLostItemWindow extends JFrame implements ActionListener, Mous
     }
     
     public void submitReport(){
-       
-        String itemName = nameField.getText();
-        String date = dateField.getText();
-        String location = locationField.getText();
-        String description = descriptionArea.getText();
+       String itemName = nameField.getText().trim();
+        String date = dateField.getText().trim();
+        String location = locationField.getText().trim();
+        String description = descriptionArea.getText().trim();
         String category = categories.getSelectedItem().toString();
         
-        
-        try{
-            Integer.parseInt(itemName);
+        // Validation checks with proper user feedback
+        if(itemName.equals("")){
+            JOptionPane.showMessageDialog(this, "Please enter the item name", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
-        catch(NumberFormatException e){
-            
-        }
-        
-         try{
-            Integer.parseInt(date);
+        if(category.equals("Select category")){
+            JOptionPane.showMessageDialog(this, "Please select a category", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
-        catch(NumberFormatException e){
-            
-        }
-         
-          try{
-            Integer.parseInt(location);
+        if(date.equals("")){
+            JOptionPane.showMessageDialog(this, "Please enter the date you lost your item", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
-        catch(NumberFormatException e){
-            
-        }
-          
-           try{
-            Integer.parseInt(description);
+        if(location.equals("")){
+            JOptionPane.showMessageDialog(this, "Please specify the location", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
-        catch(NumberFormatException e){
-            
+        if(description.equals("")){
+            JOptionPane.showMessageDialog(this, "Please describe your item", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
         }
-           
-           if(itemName.equals("")){
-               JOptionPane.showMessageDialog(this, "Please enter the item name",null, JOptionPane.WARNING_MESSAGE);
-               return;
-           }
-           
-           if(category.equals("Select category")){
-               JOptionPane.showMessageDialog(this, "Please select category",null, JOptionPane.WARNING_MESSAGE);
-               return;
-           }
-           
-           if(date.equals("")){
-               JOptionPane.showMessageDialog(this, "Please enter the date you lost you item",null, JOptionPane.WARNING_MESSAGE);
-               return;
-           }
-           
-           if(description.equals("")){
-               JOptionPane.showMessageDialog(this, "Please describe your item",null, JOptionPane.WARNING_MESSAGE);
-               return;
-           }
-           
-           if(location.equals("")){
-               JOptionPane.showMessageDialog(this, "Please specify the location",null, JOptionPane.WARNING_MESSAGE);
-               return;
-           }
-           
-           if(originalImage==null){
-               return;
-           }
         
+        if(originalImage == null){
+            JOptionPane.showMessageDialog(this, "Please upload an image of the item", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+      
+        // Set item and report attributes
         item.setItemName(itemName);
         item.setCategory(category);
         item.setDescription(description);
         item.setStatus("Pending");
+        
         report.setLocation(location);
         report.setItemType("Lost");
-         report.setDateLost(date);
+        report.setDateLost(date);
+        
         try {
-              byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
-             report.setImageData(imageBytes);
-          } catch (IOException e) {
-           JOptionPane.showMessageDialog(this, "Error reading image file: " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
-        return;
-         }
-       
+            byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
+            report.setImageData(imageBytes);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error reading image file: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         
-        reportDao.submitReport(item,report,currentUser);
+        // Submit to database via DAO
+        reportDao.submitReport(item, report, currentUser);
         
-      
+        JOptionPane.showMessageDialog(this, "Lost item report submitted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
         
-       nameField.setText("");
-        dateField.setText("");
-        locationField.setText("");
-        descriptionArea.setText("");
-
-        categories.setSelectedIndex(0);
-
-        imageSpaceLbl.setIcon(null);
-        imageSpaceLbl.setText("No image selected");
-
-        originalImage = null;  
+        // Clear form fields after successful submission
+        clearForm();
         
         
         

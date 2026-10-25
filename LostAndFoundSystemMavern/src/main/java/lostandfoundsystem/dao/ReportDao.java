@@ -21,47 +21,78 @@ public class ReportDao {
     /*
      * SUBMIT LOST ITEM REPORT
      */
-    public void submitReport(Item item, Report report, User currentUser) {
-        String insert_details = "INSERT INTO ITEM (ITEM_NAME, CATEGORY, DESCRIPTION, STATUS) VALUES (?, ?, ?, ?)";
+    public boolean submitReport(Item item, Report report, User currentUser) {
+        String insertDetails = "INSERT INTO ITEM (ITEM_NAME, CATEGORY, DESCRIPTION, STATUS) VALUES (?, ?, ?, ?)";
         String reportDetails = "INSERT INTO REPORTS (PERSON_ID, ITEM_ID, DATE_LOST, LOCATION, ITEM_IMAGE, ITEM_TYPE) VALUES (?, ?, ?, ?, ?, ?)";
 
         int currentUserId = currentUser.getPersonId();
         report.setPersonID(currentUserId);
 
-        try (Connection connection = DBConnection.derbyConnection()) {
-            try (PreparedStatement ps = connection.prepareStatement(insert_details, Statement.RETURN_GENERATED_KEYS)) {
+        Connection connection = null;
+        try {
+            connection = DBConnection.derbyConnection();
+            connection.setAutoCommit(false); // Start transaction
+
+            int generatedKey = 0;
+            try (PreparedStatement ps = connection.prepareStatement(insertDetails, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setString(1, item.getItemName());
                 ps.setString(2, item.getCategory());
                 ps.setString(3, item.getDescription());
                 ps.setString(4, item.getStatus());
                 ps.executeUpdate();
 
-                int generatedKey = 0;
                 try (ResultSet rs = ps.getGeneratedKeys()) {
                     if (rs != null && rs.next()) {
                         generatedKey = rs.getInt(1);
                         item.setItem_id(generatedKey);
                     }
                 }
+            }
 
-                try (PreparedStatement repStatement = connection.prepareStatement(reportDetails, Statement.RETURN_GENERATED_KEYS)) {
-                    repStatement.setInt(1, currentUserId);
-                    repStatement.setInt(2, generatedKey);
-                    repStatement.setString(3, report.getDateLost());
-                    repStatement.setString(4, report.getLocation());
-                    repStatement.setBytes(5, report.getImageData());
-                    repStatement.setString(6, report.getItemType());
-                    repStatement.executeUpdate();
+            if (generatedKey == 0) {
+                connection.rollback();
+                System.out.println("ERROR: Failed to retrieve generated ITEM_ID. Ensure your ITEM table primary key is defined as GENERATED ALWAYS AS IDENTITY.");
+                return false;
+            }
 
-                    try (ResultSet result = repStatement.getGeneratedKeys()) {
-                        if (result != null && result.next()) {
-                            report.setReportID(result.getInt(1));
-                        }
+            try (PreparedStatement repStatement = connection.prepareStatement(reportDetails, Statement.RETURN_GENERATED_KEYS)) {
+                repStatement.setInt(1, currentUserId);
+                repStatement.setInt(2, generatedKey);
+                repStatement.setString(3, report.getDateLost());
+                repStatement.setString(4, report.getLocation());
+                repStatement.setBytes(5, report.getImageData());
+                repStatement.setString(6, report.getItemType());
+                repStatement.executeUpdate();
+
+                try (ResultSet result = repStatement.getGeneratedKeys()) {
+                    if (result != null && result.next()) {
+                        report.setReportID(result.getInt(1));
                     }
                 }
             }
+
+            connection.commit(); // Commit transaction successfully
+            return true;
+
         } catch (SQLException er) {
             System.out.println("ERROR submitting report: " + er);
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException rbEx) {
+                    System.out.println("ERROR rolling back transaction: " + rbEx);
+                }
+            }
+            return false;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                } catch (SQLException closeEx) {
+                    System.out.println("ERROR closing connection: " + closeEx);
+                }
+            }
         }
     }
 

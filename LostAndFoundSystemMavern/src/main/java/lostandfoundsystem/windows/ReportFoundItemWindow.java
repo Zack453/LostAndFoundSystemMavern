@@ -1,5 +1,3 @@
-//250055392
-
 package lostandfoundsystem.windows;
 
 import lostandfoundsystem.components.PageHeaderPanel;
@@ -43,7 +41,6 @@ import lostandfoundsystem.dao.LostItemDAO;
 import lostandfoundsystem.dao.ReportDao;
 import lostandfoundsystem.domain.Item;
 import lostandfoundsystem.domain.Report;
-
 
 public class ReportFoundItemWindow extends JFrame implements ActionListener, MouseListener {
     
@@ -98,7 +95,7 @@ public class ReportFoundItemWindow extends JFrame implements ActionListener, Mou
         JPanel center = new JPanel(new BorderLayout(15, 15));
         center.setOpaque(false);
 
-        PageHeaderPanel headerPanel = new PageHeaderPanel("REPORT FOUND ITEM",currentUser);
+        PageHeaderPanel headerPanel = new PageHeaderPanel("REPORT FOUND ITEM", currentUser);
 
         center.add(headerPanel, BorderLayout.NORTH);
         center.add(createContentPanel(), BorderLayout.CENTER);
@@ -146,7 +143,7 @@ public class ReportFoundItemWindow extends JFrame implements ActionListener, Mou
 
     private JPanel createDetailsPanel() {
 
-        UIComponents.RoundedPanel detailsPanel =new UIComponents.RoundedPanel(20,Colors.LOGIN_BACKGROUND_COLOR);
+        UIComponents.RoundedPanel detailsPanel = new UIComponents.RoundedPanel(20, Colors.LOGIN_BACKGROUND_COLOR);
 
         detailsPanel.setLayout(new BorderLayout());
         detailsPanel.setBorder(new EmptyBorder(25, 30, 25, 30));
@@ -157,8 +154,8 @@ public class ReportFoundItemWindow extends JFrame implements ActionListener, Mou
 
         itemlbl = new JLabel("Item Name:");
         categorylbl = new JLabel("Category:");
-        datelbl = new JLabel("Date Lost:");
-        locationLbl = new JLabel("Location:");
+        datelbl = new JLabel("Date Found:");
+        locationLbl = new JLabel("Location Found:");
 
         styleLabel(itemlbl);
         styleLabel(categorylbl);
@@ -200,10 +197,10 @@ public class ReportFoundItemWindow extends JFrame implements ActionListener, Mou
 
         JPanel mainFieldsPanel = new JPanel(new BorderLayout(0, 20));
         mainFieldsPanel.setOpaque(false);
-        mainFieldsPanel.add(fieldsPanel,BorderLayout.NORTH);
-        mainFieldsPanel.add(createDescriptionPanel(),BorderLayout.CENTER);
+        mainFieldsPanel.add(fieldsPanel, BorderLayout.NORTH);
+        mainFieldsPanel.add(createDescriptionPanel(), BorderLayout.CENTER);
 
-        detailsPanel.add(mainFieldsPanel,BorderLayout.CENTER);
+        detailsPanel.add(mainFieldsPanel, BorderLayout.CENTER);
 
         return detailsPanel;
     }
@@ -225,15 +222,15 @@ public class ReportFoundItemWindow extends JFrame implements ActionListener, Mou
 
         JScrollPane scrollPane = new JScrollPane(descriptionArea);
 
-        descriptionPanel.add( descriptionlbl,BorderLayout.NORTH);
-        descriptionPanel.add(scrollPane,BorderLayout.CENTER);
+        descriptionPanel.add(descriptionlbl, BorderLayout.NORTH);
+        descriptionPanel.add(scrollPane, BorderLayout.CENTER);
 
         return descriptionPanel;
     }
 
     private JPanel createImagePanel() {
 
-        UIComponents.RoundedPanel imagePanel = new UIComponents.RoundedPanel(20,Colors.LOGIN_BACKGROUND_COLOR);
+        UIComponents.RoundedPanel imagePanel = new UIComponents.RoundedPanel(20, Colors.LOGIN_BACKGROUND_COLOR);
 
         imagePanel.setLayout(new BorderLayout(0, 15));
 
@@ -243,24 +240,24 @@ public class ReportFoundItemWindow extends JFrame implements ActionListener, Mou
 
         styleLabel(itemImagelbl);
 
-        imagePanel.add( itemImagelbl, BorderLayout.NORTH);
+        imagePanel.add(itemImagelbl, BorderLayout.NORTH);
 
         imageSpaceLbl = new JLabel("No image selected", SwingConstants.CENTER);
         imageSpaceLbl.setOpaque(true);
         imageSpaceLbl.setBackground(Color.WHITE);
         imageSpaceLbl.setBorder(BorderFactory.createLineBorder(Colors.BORDER_GRAY));
 
-        imagePanel.add(imageSpaceLbl,BorderLayout.CENTER);
+        imagePanel.add(imageSpaceLbl, BorderLayout.CENTER);
 
-        uploadBtn = new UIComponents.RoundedButton("Upload Image",Colors.ACCENT_BLUE_BUTTON, Colors.WHITE_TEXT_COLOR,15);
+        uploadBtn = new UIComponents.RoundedButton("Upload Image", Colors.ACCENT_BLUE_BUTTON, Colors.WHITE_TEXT_COLOR, 15);
         uploadBtn.setPreferredSize(new Dimension(160, 40));
         uploadBtn.addActionListener(this);
 
-        JPanel uploadButtonPanel =new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel uploadButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         uploadButtonPanel.setOpaque(false);
         uploadButtonPanel.add(uploadBtn);
 
-        imagePanel.add(uploadButtonPanel,BorderLayout.SOUTH);
+        imagePanel.add(uploadButtonPanel, BorderLayout.SOUTH);
 
         imageSpaceLbl.addMouseListener(this);
 
@@ -269,12 +266,12 @@ public class ReportFoundItemWindow extends JFrame implements ActionListener, Mou
 
     private JPanel createButtonPanel() {
 
-        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,20,10));
+        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
 
         buttonsPanel.setOpaque(false);
 
-        cancelBtn = new UIComponents.RoundedButton("Cancel",Colors.BLACK_BUTTON_COLOR,Colors.WHITE_TEXT_COLOR,15);
-        subBtn = new UIComponents.RoundedButton("Submit",Colors.ACCENT_BLUE_BUTTON,Colors.WHITE_TEXT_COLOR,15);
+        cancelBtn = new UIComponents.RoundedButton("Cancel", Colors.BLACK_BUTTON_COLOR, Colors.WHITE_TEXT_COLOR, 15);
+        subBtn = new UIComponents.RoundedButton("Submit", Colors.ACCENT_BLUE_BUTTON, Colors.WHITE_TEXT_COLOR, 15);
         cancelBtn.setPreferredSize(new Dimension(130, 40));
         subBtn.setPreferredSize(new Dimension(130, 40));
         cancelBtn.addActionListener(this);
@@ -309,115 +306,63 @@ public class ReportFoundItemWindow extends JFrame implements ActionListener, Mou
     
     public void submitReport(){
        
-        String itemName = nameField.getText();
-        String date = dateField.getText();
-        String location = locationField.getText();
-        String description = descriptionArea.getText();
+        String itemName = nameField.getText().trim();
+        String date = dateField.getText().trim();
+        String location = locationField.getText().trim();
+        String description = descriptionArea.getText().trim();
         String category = categories.getSelectedItem().toString();
-        
-        
-        try{
-            Integer.parseInt(itemName);
+         
+        if(itemName.equals("")){
+            JOptionPane.showMessageDialog(this, "Please enter the item name", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
-        }
-        
-        catch(NumberFormatException e){
-            
-        }
-        
-         try{
-            Integer.parseInt(date);
-            return;
-        }
-        
-        catch(NumberFormatException e){
-            
         }
          
-          try{
-            Integer.parseInt(location);
+        if(category.equals("Select category")){
+            JOptionPane.showMessageDialog(this, "Please select a category", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
-        catch(NumberFormatException e){
-            
-        }
-          
-           try{
-            Integer.parseInt(description);
+         
+        if(date.equals("")){
+            JOptionPane.showMessageDialog(this, "Please enter the date you found the item", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
-        catch(NumberFormatException e){
-            
+         
+        if(description.equals("")){
+            JOptionPane.showMessageDialog(this, "Please describe the item", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
         }
-           
-           if(itemName.equals("")){
-               JOptionPane.showMessageDialog(this, "Please enter the item name",null, JOptionPane.WARNING_MESSAGE);
-               return;
-           }
-           
-           if(category.equals("Select category")){
-               JOptionPane.showMessageDialog(this, "Please select category",null, JOptionPane.WARNING_MESSAGE);
-               return;
-           }
-           
-           if(date.equals("")){
-               JOptionPane.showMessageDialog(this, "Please enter the date you lost you item",null, JOptionPane.WARNING_MESSAGE);
-               return;
-           }
-           
-           if(description.equals("")){
-               JOptionPane.showMessageDialog(this, "Please describe your item",null, JOptionPane.WARNING_MESSAGE);
-               return;
-           }
-           
-           if(location.equals("")){
-               JOptionPane.showMessageDialog(this, "Please specify the location",null, JOptionPane.WARNING_MESSAGE);
-               return;
-           }
-           
-           if(originalImage==null){
-               return;
-           }
+         
+        if(location.equals("")){
+            JOptionPane.showMessageDialog(this, "Please specify the location", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+         
+        if(originalImage == null){
+            JOptionPane.showMessageDialog(this, "Please upload an image of the item", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         
         item.setItemName(itemName);
         item.setCategory(category);
         item.setDescription(description);
         item.setStatus("Pending");
+        
         report.setLocation(location);
         report.setItemType("Found");
         report.setDateLost(date);
-        
+         
         try {
-              byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
-             report.setImageData(imageBytes);
-          } catch (IOException e) {
-           JOptionPane.showMessageDialog(this, "Error reading image file: " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
-        return;
-         }
-        
-        
-        
-        
-        reportDao.submitReport(item,report,currentUser);
-        
-      
-        
-       nameField.setText("");
-        dateField.setText("");
-        locationField.setText("");
-        descriptionArea.setText("");
-
-        categories.setSelectedIndex(0);
-
-        imageSpaceLbl.setIcon(null);
-        imageSpaceLbl.setText("No image selected");
-
-        originalImage = null;  
-        
-        
-        
+            byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
+            report.setImageData(imageBytes);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error reading image file: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+         
+        reportDao.submitReport(item, report, currentUser);
+         
+        JOptionPane.showMessageDialog(this, "Found item report submitted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        clearForm();
     }
 
     private void uploadImage() {
@@ -431,9 +376,9 @@ public class ReportFoundItemWindow extends JFrame implements ActionListener, Mou
             File file = fileChooser.getSelectedFile();
             imagePath = file.getAbsolutePath();
             originalImage = new javax.swing.ImageIcon(imagePath);
-            Image scaledImage = originalImage.getImage().getScaledInstance(320,180,Image.SCALE_SMOOTH);
+            Image scaledImage = originalImage.getImage().getScaledInstance(320, 180, Image.SCALE_SMOOTH);
             
-            javax.swing.ImageIcon scaledIcon =new javax.swing.ImageIcon(scaledImage);
+            javax.swing.ImageIcon scaledIcon = new javax.swing.ImageIcon(scaledImage);
             imageSpaceLbl.setText("");
             imageSpaceLbl.setIcon(scaledIcon);
             
@@ -444,17 +389,10 @@ public class ReportFoundItemWindow extends JFrame implements ActionListener, Mou
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
-          
-
         if (e.getSource() == cancelBtn) {
             clearForm();
         } else if (e.getSource() == subBtn) {
-            
             submitReport();
-            
-            
-            
         } else if (e.getSource() == uploadBtn) {
             uploadImage();
         }
@@ -471,7 +409,7 @@ public class ReportFoundItemWindow extends JFrame implements ActionListener, Mou
             expandSpace.setBackground(Color.BLACK);
             expandSpace.setOpaque(true);
 
-            JOptionPane.showMessageDialog(this,expandSpace,"Image Preview",JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(this, expandSpace, "Image Preview", JOptionPane.PLAIN_MESSAGE);
         }
     }
 

@@ -3,6 +3,7 @@ package lostandfoundsystem.windows;
 import lostandfoundsystem.components.PageHeaderPanel;
 import lostandfoundsystem.components.SideBarPanel;
 import lostandfoundsystem.constants.Colors;
+import lostandfoundsystem.constants.Fonts;
 import lostandfoundsystem.domain.User;
 
 import lostandfoundsystem.dao.ClaimDAO;
@@ -16,6 +17,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -33,7 +36,6 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
     private LostItemDAO lostItemDAO;
     private ReportDao reportDAO;
 
-    // Now able to access current user obj   
     public Dashboard(User currentUser) {
         this.currentUser = currentUser;
         claimDAO = new ClaimDAO();
@@ -68,7 +70,7 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         JPanel top = new JPanel(new BorderLayout());
         top.setOpaque(false);
 
-        PageHeaderPanel header = new PageHeaderPanel(" ", currentUser);
+        PageHeaderPanel header = new PageHeaderPanel("Dashboard", currentUser);
 
         header.getBtnHome().addActionListener(new ActionListener() {
             @Override
@@ -99,34 +101,22 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-//        // --- ADMIN SECTION: View Logged Issues Button ---
-//        if (currentUser != null && "Admin".equalsIgnoreCase(currentUser.getRole())) {
-//            JPanel adminActionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-//            adminActionPanel.setOpaque(false);
-//
-//            JButton btnViewIssues = new JButton("Check Logged Issues");
-//            btnViewIssues.setBackground(new Color(220, 50, 50));
-//            btnViewIssues.setForeground(Color.WHITE);
-//            btnViewIssues.setFont(new Font("Arial", Font.BOLD, 14));
-//            btnViewIssues.setFocusPainted(false);
-//            btnViewIssues.setBorder(new EmptyBorder(10, 20, 10, 20));
-//
-//            btnViewIssues.addActionListener(e -> {
-//                AdminReportWindow issuesWindow = new AdminReportWindow(currentUser);
-//                issuesWindow.setVisible(true);
-//                dispose();
-//            });
-//
-//            adminActionPanel.add(btnViewIssues);
-//            panel.add(adminActionPanel);
-//            panel.add(Box.createVerticalStrut(20));
-//        }
-
+        // --- View All Claims Section (Clickable) ---
         JLabel claims = new JLabel("View All Claims");
         claims.setOpaque(true);
         claims.setBackground(new Color(40, 90, 255));
         claims.setForeground(Color.WHITE);
         claims.setBorder(new EmptyBorder(8, 15, 8, 15));
+        claims.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        claims.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ClaimWindow claimWindow = new ClaimWindow(currentUser);
+                claimWindow.setVisible(true);
+                dispose();
+            }
+        });
 
         panel.add(claims);
         panel.add(Box.createVerticalStrut(15));
@@ -136,33 +126,46 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
 
         ArrayList<Claim> dashclaims = claimDAO.getLatestClaims();
 
-        for (Claim claim : dashclaims) {
-            Color statusColor;
-            if (claim.getStatus().equalsIgnoreCase("Approved")) {
-                statusColor = new Color(30, 180, 60);
-            } else if (claim.getStatus().equalsIgnoreCase("Rejected")) {
-                statusColor = Color.RED;
-            } else {
-                statusColor = Colors.YELLOW_STATUS_COLOR;
+        if (dashclaims != null) {
+            for (Claim claim : dashclaims) {
+                Color statusColor;
+                if (claim.getStatus().equalsIgnoreCase("Approved")) {
+                    statusColor = new Color(30, 180, 60);
+                } else if (claim.getStatus().equalsIgnoreCase("Rejected")) {
+                    statusColor = Color.RED;
+                } else {
+                    statusColor = Colors.YELLOW_STATUS_COLOR;
+                }
+                claimCards.add(
+                        createClaimCard(
+                                claim.getItemName(),
+                                claim.getDate(),
+                                claim.getStatus(),
+                                statusColor
+                        )
+                );
             }
-            claimCards.add(
-                    createClaimCard(
-                            claim.getItemName(),
-                            claim.getDate(),
-                            claim.getStatus(),
-                            statusColor
-                    )
-            );
         }
 
         panel.add(claimCards);
         panel.add(Box.createVerticalStrut(30));
 
+        // --- View All Posts Section (Clickable) ---
         JLabel posts = new JLabel("View All Posts");
         posts.setOpaque(true);
         posts.setBackground(new Color(40, 90, 255));
         posts.setForeground(Color.WHITE);
         posts.setBorder(new EmptyBorder(8, 15, 8, 15));
+        posts.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        posts.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ViewAllPostsWindow postsWindow = new ViewAllPostsWindow(currentUser);
+                postsWindow.setVisible(true);
+                dispose();
+            }
+        });
 
         panel.add(posts);
         panel.add(Box.createVerticalStrut(15));
@@ -172,16 +175,18 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
 
         ArrayList<ReportCard> dashPosts = reportDAO.getLatestItems();
 
-        for (ReportCard post : dashPosts) {
-            cards.add(
-                    createPostCard(
-                            post.getItemID(),
-                            post.getItemName(),
-                            post.getDateLost(),
-                            post.getLocation(),
-                            post.getStatus()
-                    )
-            );
+        if (dashPosts != null) {
+            for (ReportCard post : dashPosts) {
+                cards.add(
+                        createPostCard(
+                                post.getItemID(),
+                                post.getItemName(),
+                                post.getDateLost(),
+                                post.getLocation(),
+                                post.getStatus()
+                        )
+                );
+            }
         }
 
         panel.add(cards);

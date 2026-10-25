@@ -294,8 +294,8 @@ public class SignUpWindow extends JFrame implements ActionListener {
                         surname,
                         password,
                         securityQuestion,
-                        role,
                         answer,
+                        role,
                         idNum,
                         "Not Assigned",
                         1

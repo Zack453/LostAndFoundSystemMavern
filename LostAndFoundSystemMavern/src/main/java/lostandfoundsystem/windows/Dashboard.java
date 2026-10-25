@@ -96,28 +96,28 @@ public class Dashboard extends JFrame implements ActionListener, ItemListener {
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        // --- ADMIN SECTION: View Logged Issues Button ---
-        if (currentUser != null && "Admin".equalsIgnoreCase(currentUser.getRole())) {
-            JPanel adminActionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-            adminActionPanel.setOpaque(false);
-
-            JButton btnViewIssues = new JButton("Check Logged Issues");
-            btnViewIssues.setBackground(new Color(220, 50, 50));
-            btnViewIssues.setForeground(Color.WHITE);
-            btnViewIssues.setFont(new Font("Arial", Font.BOLD, 14));
-            btnViewIssues.setFocusPainted(false);
-            btnViewIssues.setBorder(new EmptyBorder(10, 20, 10, 20));
-
-            btnViewIssues.addActionListener(e -> {
-                AdminReportWindow issuesWindow = new AdminReportWindow(currentUser);
-                issuesWindow.setVisible(true);
-                dispose();
-            });
-
-            adminActionPanel.add(btnViewIssues);
-            panel.add(adminActionPanel);
-            panel.add(Box.createVerticalStrut(20));
-        }
+//        // --- ADMIN SECTION: View Logged Issues Button ---
+//        if (currentUser != null && "Admin".equalsIgnoreCase(currentUser.getRole())) {
+//            JPanel adminActionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+//            adminActionPanel.setOpaque(false);
+//
+//            JButton btnViewIssues = new JButton("Check Logged Issues");
+//            btnViewIssues.setBackground(new Color(220, 50, 50));
+//            btnViewIssues.setForeground(Color.WHITE);
+//            btnViewIssues.setFont(new Font("Arial", Font.BOLD, 14));
+//            btnViewIssues.setFocusPainted(false);
+//            btnViewIssues.setBorder(new EmptyBorder(10, 20, 10, 20));
+//
+//            btnViewIssues.addActionListener(e -> {
+//                AdminReportWindow issuesWindow = new AdminReportWindow(currentUser);
+//                issuesWindow.setVisible(true);
+//                dispose();
+//            });
+//
+//            adminActionPanel.add(btnViewIssues);
+//            panel.add(adminActionPanel);
+//            panel.add(Box.createVerticalStrut(20));
+//        }
 
         JLabel claims = new JLabel("View All Claims");
         claims.setOpaque(true);

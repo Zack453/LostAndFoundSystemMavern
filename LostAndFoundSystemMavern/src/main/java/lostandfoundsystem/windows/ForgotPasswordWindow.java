@@ -11,7 +11,7 @@ import lostandfoundsystem.components.UIComponents;
 import lostandfoundsystem.connection.DBConnection;
 import lostandfoundsystem.constants.Colors;
 import lostandfoundsystem.constants.Fonts;
-import lostandfoundsystem.dao.passwordDAO;
+import lostandfoundsystem.dao.PasswordDAO;
 
 public class ForgotPasswordWindow extends JFrame {
 
@@ -212,7 +212,7 @@ public class ForgotPasswordWindow extends JFrame {
 
         try (Connection conn = DBConnection.derbyConnection()) {
 
-            passwordDAO dao = new passwordDAO();
+            PasswordDAO dao = new PasswordDAO();
 
             boolean success = dao.updatePassword(
                     conn,

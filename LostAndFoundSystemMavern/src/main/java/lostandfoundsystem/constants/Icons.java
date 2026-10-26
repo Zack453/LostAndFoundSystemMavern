@@ -17,6 +17,7 @@ public class Icons {
     public static ImageIcon Bell;
     public static ImageIcon Help;
     public static ImageIcon Exit;
+    public static ImageIcon Admin;
     
 
     static {
@@ -30,6 +31,7 @@ public class Icons {
         Bell = loadIcon("/icons/bell.png");
         Help = loadIcon("/icons/help.png");
         Exit = loadIcon("/icons/exit.png");
+        Admin = loadIcon("/icons/admin.png");
         
     }
 

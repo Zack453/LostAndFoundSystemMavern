@@ -1,4 +1,3 @@
-// 230939023
 package lostandfoundsystem.windows;
 
 // CUSTOM IMPORTS
@@ -224,6 +223,18 @@ public class SignUpWindow extends JFrame implements ActionListener {
                 return;
             }
 
+            //ID LENGTH VALIDATION (Max 12) 
+            if (idNum.length() > 12) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "ID Number cannot be more than 12 characters long. Please try again.",
+                        "Invalid ID Length",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                txtIdNum.requestFocus(); 
+                return;
+            }
+
             int personId;
             try {
                 personId = Integer.parseInt(idNum);
@@ -294,8 +305,8 @@ public class SignUpWindow extends JFrame implements ActionListener {
                         surname,
                         password,
                         securityQuestion,
-                        answer,
                         role,
+                        answer,
                         idNum,
                         "Not Assigned",
                         1

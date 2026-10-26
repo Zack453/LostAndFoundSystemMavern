@@ -71,7 +71,7 @@ public class AdminReportWindow extends JFrame implements ActionListener {
         JPanel top = new JPanel(new BorderLayout());
         top.setOpaque(false);
 
-        PageHeaderPanel header = new PageHeaderPanel("Admin Report Management", currentUser);
+        PageHeaderPanel header = new PageHeaderPanel("ADMIN REPORT ", currentUser);
 
         header.getBtnHome().addActionListener(new ActionListener() {
             @Override

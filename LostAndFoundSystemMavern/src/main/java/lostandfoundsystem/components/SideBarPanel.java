@@ -100,7 +100,7 @@ public class SideBarPanel extends JPanel {
         if (currentUser != null && currentUser.getRole().equalsIgnoreCase("Admin")) {
             btnAdminReport = createMenuButton(
                     "Admin Report",
-                    Icons.ViewAllPosts // Replace with Icons.AdminReport if available in your Icons class
+                    Icons.Admin 
             );
 
             btnAdminReport.addActionListener(new ActionListener() {

@@ -49,7 +49,7 @@ public class LostAndFoundSystem {
 //                    + "DATE_CREATED VARCHAR(20))";
 //            st.executeUpdate(createTable);
 
-            System.out.println("ITEM table created successfully.");
+//            System.out.println("ITEM table created successfully.");
 
 //            st.close();
             connection.close();

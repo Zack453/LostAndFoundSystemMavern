@@ -134,6 +134,7 @@ public class NotificationsWindow extends JFrame {
         notificationPanel.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.LIGHT_GRAY),
                 new EmptyBorder(15, 15, 15, 15)
+                
         ));
 
         JTextArea txtMessage = new JTextArea(notification.getMessage());

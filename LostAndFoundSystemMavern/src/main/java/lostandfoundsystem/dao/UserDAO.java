@@ -123,8 +123,8 @@ public boolean saveStudent(Student student) {
             pstmt.setString(3, admin.getSurname());
             pstmt.setString(4, admin.getPassword());
             pstmt.setString(5, admin.getSecQuestion());
-            pstmt.setString(6, admin.getSecAnswer());
-            pstmt.setString(7, admin.getRole());
+            pstmt.setString(6, admin.getRole());
+            pstmt.setString(7, admin.getSecAnswer());
             pstmt.setString(8, admin.getEmployeeId());
             pstmt.setString(9, admin.getDepartment());
             pstmt.setInt(10, admin.getAccessLevel());
